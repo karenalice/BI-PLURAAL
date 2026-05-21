@@ -1,0 +1,313 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #f5f5f6;
+    --card: #ffffff;
+    --text: #111111;
+    --muted: #71717a;
+    --border: #d9d9dd;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    /* Roxo usado no ícone do portal */
+    --purple: #4f518b;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* =========================================================
+   TOPO DO PORTAL
+   ========================================================= */
+
+.topbar {
+    width: 100%;
+    background: #ffffff;
+    border-bottom: 1px solid #e3e3e7;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.topbar-content {
+    max-width: 1800px;
+    margin: 0 auto;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    padding: 0 48px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.brand-logo {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.brand-title {
+    font-size: 23px;
+    font-weight: 800;
+    color: #111111;
+}
+
+/* =========================================================
+   ÁREA PRINCIPAL / HERO
+   ========================================================= */
+
+.hero {
+    min-height: calc(100vh - 72px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px 120px;
+}
+
+.hero-content {
+    max-width: 900px;
+}
+
+.hero-logo {
+    width: 78px;
+    height: 78px;
+    object-fit: contain;
+    margin-bottom: 34px;
+}
+
+.hero h1 {
+    font-size: 64px;
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 18px;
+    color: #111111;
+}
+
+.hero p {
+    font-size: 22px;
+    line-height: 1.45;
+    color: #6e7381;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+/* =========================================================
+   CONTAINER DOS DASHBOARDS
+   ========================================================= */
+
+.container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+}
+
+.dashboards-section h2 {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    color: #111111;
+}
+
+.subtitle {
+    display: inline-block;
+    font-size: 18px;
+    color: #6e7381;
+    margin-bottom: 28px;
+}
+
+/* =========================================================
+   CAMPO DE PESQUISA
+   ========================================================= */
+
+.search-area {
+    width: 100%;
+    margin-bottom: 34px;
+}
+
+.search-area input {
+    width: 100%;
+    max-width: 520px;
+    height: 54px;
+
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    padding: 0 20px;
+
+    font-size: 16px;
+    color: #111111;
+
+    outline: none;
+
+    box-shadow: var(--shadow);
+    transition: 0.2s ease;
+}
+
+.search-area input::placeholder {
+    color: #8a8a95;
+}
+
+.search-area input:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 4px rgba(79, 81, 139, 0.12);
+}
+
+/* =========================================================
+   GRID DOS CARDS
+   ========================================================= */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+}
+
+/* =========================================================
+   CARD DO DASHBOARD
+   ========================================================= */
+
+.dashboard-card {
+    display: block;
+    text-decoration: none;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px 28px 24px;
+    min-height: 122px;
+    box-shadow: var(--shadow);
+    transition: 0.2s ease;
+    color: inherit;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+/* Título do card preto normalmente */
+.card-header h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #111111;
+    transition: color 0.2s ease;
+}
+
+/* Texto do card */
+.dashboard-card p {
+    font-size: 16px;
+    color: #7a7a85;
+    line-height: 1.4;
+}
+
+/* Ícone do card cinza normalmente */
+.icon-box {
+    width: 24px;
+    height: 24px;
+    color: #6d6d78;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.icon-box svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* 
+   Ao passar o mouse:
+   título e ícone ficam roxos
+*/
+.dashboard-card:hover .card-header h3,
+.dashboard-card:hover .icon-box {
+    color: var(--purple);
+}
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 1300px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero h1 {
+        font-size: 52px;
+    }
+
+    .hero p {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .topbar-content,
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .brand-title {
+        font-size: 20px;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 70px 20px 80px;
+    }
+
+    .hero-logo {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 26px;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .hero p {
+        font-size: 18px;
+    }
+
+    .dashboards-section h2 {
+        font-size: 30px;
+    }
+
+    .search-area input {
+        max-width: 100%;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-card {
+        min-height: auto;
+    }
+}

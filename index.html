@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+
+    <!-- Responsividade para computador, notebook, tablet e celular -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Power BI Portal</title>
+
+    <!-- Arquivo de estilo CSS -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- =========================================================
+         TOPO DO PORTAL
+         ========================================================= -->
+    <header class="topbar">
+        <div class="topbar-content">
+            <div class="brand">
+
+                <!-- Logo pequeno do topo -->
+                <img src="logo.png" alt="Logo Power BI Portal" class="brand-logo">
+
+                <!-- Nome do portal no topo -->
+                <span class="brand-title">Power BI Portal</span>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- =========================================================
+         ÁREA PRINCIPAL COM LOGO E TEXTO
+         ========================================================= -->
+    <section class="hero">
+        <div class="hero-content">
+
+            <!-- Logo central maior -->
+            <img src="logo.png" alt="Logo Portal" class="hero-logo">
+
+            <h1>Portal de Dashboards</h1>
+
+            <p>
+                Acesso centralizado a todos os seus dashboards do Power BI.
+                Clique em qualquer dashboard para visualizar os dados.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- =========================================================
+         ÁREA DOS DASHBOARDS
+         ========================================================= -->
+    <main class="container">
+        <section class="dashboards-section">
+
+            <h2>Dashboards Disponíveis</h2>
+            <span class="subtitle">19 dashboards disponíveis</span>
+
+            <!-- =====================================================
+                 CAMPO DE PESQUISA
+                 Digite o nome do dashboard para filtrar os cards.
+                 Exemplo: AMA, APSE, UNASP, IABC etc.
+                 ===================================================== -->
+            <div class="search-area">
+                <input 
+                    type="text" 
+                    id="campoPesquisa" 
+                    placeholder="Pesquisar dashboard..."
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="cards-grid" id="listaDashboards">
+
+                <!-- =====================================================
+                     LINK POWER BI - ASUMA
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMWFlMGIzZmMtZmIyOS00OTI4LWI3MTItNGEyMWFlYjQ2NDEyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>ASUMA</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - AMA
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiY2U1ZTM1OGMtODY4OS00MmRiLWE3OGEtNmVhZmRjNjBjMDhjIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>AMA</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - ANPA
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiNmI5NTVjNTUtZDgxOS00ZjRlLWFlNmYtYTcxZGI4NTNhOTBmIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>ANPA</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - BLUMENAU
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiYmMzZjI1ZjQtZjc0ZC00NDhhLWEzNTctYjQzNjFlZWYzMTlkIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>BLUMENAU</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - CAMPINAS
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMTAxOTQzY2UtMjNhMC00OWY1LTgzMDMtNjc5Njg3ODc1MGYyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>CAMPINAS</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - IABC
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMWUyOWYzYTQtMTY4NC00Mzk4LWFiNGQtZGQxZThiYmM0MTEzIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>IABC</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - IAESC
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMTEyYzExYTItZjlhZC00NzJjLTgwYzQtY2YxNWIzNTZkZTQyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>IAESC</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - MNEM
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiZTNjYjQ4YTYtMjZmNC00YTBlLWI5OWQtNWE5ZjBmOWI5NDU2IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>MNEM</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - MTO
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiYmRhOTVkNWUtNzcxZi00N2JjLWFkNTQtYjY5Y2VjYmM1N2EyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>MTO</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - AP
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMzE1ZjU4M2YtMTIyNS00MzIwLTgwZjgtNTE4MTNkY2I2NTY3IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>AP</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - APSE
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMWYwNDA2N2QtNjg1MC00ZjRiLTgyMTItMWFkMDZmOTkxYTZiIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>APSE</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - ALM
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiNjdjNTE2ZDQtZjIxNy00NjE3LWJkYzgtMzAwY2UxODk5YTE3IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>ALM</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - UNASP
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMTNjYTY1ZGUtOWI2Zi00ZDc5LThlMjgtZjU3NWU3ZjNhZmM3IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>UNASP</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - UNEB
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiZDg2YTg5ZGEtMzM0Ny00Zjk1LWEyYWYtZTFjNjE4MDFiNzM2IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>UNEB</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - UNOB
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMDI4M2VmMTEtYThhNC00MjM1LWEyOWMtOWJlMzMyOWE1M2VhIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>UNOB</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - USB
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     Observação: você enviou o mesmo link usado no UNOB.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMDI4M2VmMTEtYThhNC00MjM1LWEyOWMtOWJlMzMyOWE1M2VhIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>USB</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - ACP
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiNDg1YjMyZGQtYTZmOC00MTJkLWE2YTMtNjgzYTQwMzdiNmVlIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>ACP</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - ACSR
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMmQzNGRiNzItYjA1Zi00ZTA4LTg5MjctYzk4NjY3YmFmMDVjIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>ACSR</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+
+                <!-- =====================================================
+                     LINK POWER BI - IAP
+                     Para trocar o link, altere somente o valor do href abaixo.
+                     ===================================================== -->
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMTE5ODA1NmMtMWFlNC00NDkxLWIwN2ItNmI1OWFkNDE3OTVhIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9" class="dashboard-card" target="_blank">
+                    <div class="card-header">
+                        <h3>IAP</h3>
+                        <span class="icon-box">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M14 4H20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 14L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20 14V20H4V4H10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p>Clique para abrir o dashboard do Power BI</p>
+                </a>
+
+            </div>
+        </section>
+    </main>
+
+
+    <!-- =====================================================
+         SCRIPT DA PESQUISA
+         Filtra os dashboards conforme o texto digitado.
+         ===================================================== -->
+    <script>
+        const campoPesquisa = document.getElementById("campoPesquisa");
+        const cards = document.querySelectorAll(".dashboard-card");
+
+        campoPesquisa.addEventListener("input", function () {
+            const textoDigitado = campoPesquisa.value.toLowerCase().trim();
+
+            cards.forEach(function (card) {
+                const titulo = card.querySelector("h3").textContent.toLowerCase();
+
+                if (titulo.includes(textoDigitado)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
