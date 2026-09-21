@@ -1,2092 +1,405 @@
-let workbookFinal = null;
-let previewData = [];
+// ============================================================
+// DASHBOARDS
+// ============================================================
 
-// =====================================================
-// CABEÇALHOS DEFINITIVOS
-// =====================================================
+const dashboards = [
 
-const META_COLS = [
-  "id_arquivo",
-  "serie",
-  "nivel",
-  "nivel_serie",
-  "tipo_simulado",
-  "disciplina_nome_arquivo",
-  "bimestre",
-  "escola",
-  "ano"
-];
-
-const ALUNOS_HEADERS = [
-  ...META_COLS,
-  "Alunos",
-  "RA",
-  "Turma",
-  "Início",
-  "Fim",
-  "Tempo",
-  "Total (%)",
-  "Total (23)",
-  "disciplina"
-];
-
-const UNIDADE_HEADERS = [
-  ...META_COLS,
-  "União",
-  "Campo",
-  "Unidade",
-  "Início",
-  "Fim",
-  "Participantes",
-  "Participantes esperados",
-  "Percentual de participantes",
-  "disciplina",
-  "Nota"
-];
-
-const MAPA_HEADERS = [
-  ...META_COLS,
-  "Code",
-  "Disciplina",
-  "Conteúdo/Habilidade",
-  "Dificuldade",
-  "Gabarito"
-];
-
-const QUESTAO_HEADERS = [
-  ...META_COLS,
-  "#",
-  "Código",
-  "Disciplina",
-  "Habilidade/Conteúdo",
-  "Dificuldade",
-  "Gabarito",
-  "% Acertos",
-  "% Erros"
-];
-
-// =====================================================
-// LOG
-// =====================================================
-
-function log(msg) {
-  const el = document.getElementById("log");
-
-  if (!el) return;
-
-  el.textContent += "\n" + msg;
-  el.scrollTop = el.scrollHeight;
-}
-
-function limparLog() {
-  const logEl = document.getElementById("log");
-  const preview = document.getElementById("preview");
-
-  if (logEl) {
-    logEl.textContent = "Iniciando...";
-  }
-
-  if (preview) {
-    preview.innerHTML = "";
-  }
-
-  previewData = [];
-}
-
-// =====================================================
-// NORMALIZAÇÃO
-// =====================================================
-
-function normalizarTexto(txt) {
-  return (txt || "")
-    .toString()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[_]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toUpperCase();
-}
-
-function normalizarCabecalho(txt) {
-  return (txt || "")
-    .toString()
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-// =====================================================
-// TIPO DO ARQUIVO
-// =====================================================
-
-function detectarTipoArquivo(nomeArquivo) {
-  const n = normalizarTexto(nomeArquivo);
-
-  if (n.includes("ALUNOS") || n.includes("ALUNO")) {
-    return "alunos";
-  }
-
-  if (n.includes("UNIDADE")) {
-    return "unidade";
-  }
-
-  if (n.includes("MAPA")) {
-    return "mapa";
-  }
-
-  if (
-    n.includes("QUESTAO") ||
-    n.includes("QUESTOES")
-  ) {
-    return "questao";
-  }
-
-  return "desconhecido";
-}
-
-// =====================================================
-// ID
-// =====================================================
-
-function extrairIdArquivo(nomeArquivo) {
-  const nomeSemExt = nomeArquivo.replace(/\.[^.]+$/, "");
-
-  const match = nomeSemExt.match(
-    /^\s*([A-Za-z0-9]+)/
-  );
-
-  return match
-    ? match[1].trim()
-    : "";
-}
-
-// =====================================================
-// SÉRIE / NÍVEL
-// =====================================================
-
-function extrairSerieENivel(nomeArquivo) {
-  const n = normalizarTexto(nomeArquivo);
-
-  let serieTexto = "";
-  let nivel = "";
-  let m;
-
-  // =================================================
-  // FUND I
-  // =================================================
-
-  m = n.match(
-    /FUND\s*I\s*(\d{1,2})\s*[º°OªA]?\s*(ANO|SERIE)?/i
-  );
-
-  if (m) {
-    const numero = parseInt(m[1], 10);
-
-    serieTexto = `${numero}° ANO`;
-    nivel = "F1";
-
-    return {
-      serie: serieTexto,
-      nivel: nivel,
-      nivel_serie: `${nivel} ${serieTexto}`
-    };
-  }
-
-  // =================================================
-  // FUND II
-  // =================================================
-
-  m = n.match(
-    /FUND\s*II\s*(\d{1,2})\s*[º°OªA]?\s*(ANO|SERIE)?/i
-  );
-
-  if (m) {
-    const numero = parseInt(m[1], 10);
-
-    serieTexto = `${numero}° ANO`;
-    nivel = "F2";
-
-    return {
-      serie: serieTexto,
-      nivel: nivel,
-      nivel_serie: `${nivel} ${serieTexto}`
-    };
-  }
-
-  // =================================================
-  // FUND genérico
-  // =================================================
-
-  m = n.match(
-    /FUND\s*(\d{1,2})\s*[º°OªA]?\s*(ANO|SERIE)?/i
-  );
-
-  if (m) {
-    const numero = parseInt(m[1], 10);
-
-    serieTexto = `${numero}° ANO`;
-
-    if (numero >= 3 && numero <= 5) {
-      nivel = "F1";
-    } else if (numero >= 6 && numero <= 9) {
-      nivel = "F2";
-    } else {
-      nivel = "FUND";
-    }
-
-    return {
-      serie: serieTexto,
-      nivel: nivel,
-      nivel_serie: `${nivel} ${serieTexto}`
-    };
-  }
-
-  // =================================================
-  // EM 3º
-  // E.M 3º
-  // EM 3º ANO
-  // =================================================
-
-  m = n.match(
-    /(?:^|[\s-])(E\.?\s*M|EM)\s*(\d{1,2})\s*[º°OªA]?\s*(ANO|SERIE)?/i
-  );
-
-  if (m) {
-    const numero = parseInt(m[2], 10);
-
-    serieTexto = `${numero}° ANO`;
-    nivel = "E.M";
-
-    return {
-      serie: serieTexto,
-      nivel: nivel,
-      nivel_serie: `${nivel} ${serieTexto}`
-    };
-  }
-
-  // =================================================
-  // 3º EM
-  // 3 EM
-  // 3º E.M
-  // =================================================
-
-  m = n.match(
-    /(\d{1,2})\s*[º°OªA]?\s*(E\.?\s*M|EM)(?:[\s-]|$)/i
-  );
-
-  if (m) {
-    const numero = parseInt(m[1], 10);
-
-    serieTexto = `${numero}° ANO`;
-    nivel = "E.M";
-
-    return {
-      serie: serieTexto,
-      nivel: nivel,
-      nivel_serie: `${nivel} ${serieTexto}`
-    };
-  }
-
-  // =================================================
-  // 3º ANO EM
-  // 3ª SERIE EM
-  // =================================================
-
-  m = n.match(
-    /(\d{1,2})\s*[º°OªA]?\s*(ANO|SERIE)\s*(E\.?\s*M|EM)/i
-  );
-
-  if (m) {
-    const numero = parseInt(m[1], 10);
-
-    serieTexto = `${numero}° ANO`;
-    nivel = "E.M";
-
-    return {
-      serie: serieTexto,
-      nivel: nivel,
-      nivel_serie: `${nivel} ${serieTexto}`
-    };
-  }
-
-  // =================================================
-  // Se tiver EM mas não achou série
-  // =================================================
-
-  if (
-    /(?:^|[\s-])(E\.?\s*M|EM)(?:[\s-]|$)/i.test(n)
-  ) {
-    return {
-      serie: "",
-      nivel: "E.M",
-      nivel_serie: "E.M"
-    };
-  }
-
-  return {
-    serie: "",
-    nivel: "",
-    nivel_serie: ""
-  };
-}
-
-// =====================================================
-// TIPO SIMULADO
-// =====================================================
-
-function extrairTipoSimulado(nomeArquivo) {
-  const m = nomeArquivo.match(
-    /SIMULADO\s+ESSENCIAL|SIMULADO\s+B[ÁA]SICO/i
-  );
-
-  if (!m) {
-    return "";
-  }
-
-  return m[0]
-    .replace(/\s+/g, " ")
-    .trim()
-    .toUpperCase()
-    .replace("BÁSICO", "BASICO");
-}
-
-// =====================================================
-// BIMESTRE
-// =====================================================
-
-function extrairBimestre(nomeArquivo) {
-  const m = nomeArquivo.match(
-    /\d+\s*[º°O]?\s*BIMESTRE/i
-  );
-
-  return m
-    ? m[0]
-        .replace(/\s+/g, " ")
-        .trim()
-        .toUpperCase()
-    : "";
-}
-
-// =====================================================
-// ANO
-// =====================================================
-
-function extrairAno(nomeArquivo) {
-  const nomeSemExt = nomeArquivo.replace(
-    /\.[^.]+$/,
-    ""
-  );
-
-  const m = nomeSemExt.match(
-    /(?:ALUNO|ALUNOS|UNIDADE|MAPA|QUESTAO|QUESTOES|QUESTÕES)\s*-\s*(\d{4})/i
-  );
-
-  return m
-    ? m[1]
-    : "";
-}
-
-// =====================================================
-// ESCOLA
-// =====================================================
-
-function extrairEscola(nomeArquivo) {
-  const nomeSemExt = nomeArquivo.replace(
-    /\.[^.]+$/,
-    ""
-  );
-
-  const match = nomeSemExt.match(
-    /PLURAAL\s*-\s*(.*?)\s*(?:-\s*(ALUNO|ALUNOS|UNIDADE|MAPA|QUESTAO|QUESTOES|QUESTÕES)\s*(?:-\s*\d{4})?)?$/i
-  );
-
-  if (!match || !match[1]) {
-    return "";
-  }
-
-  return match[1]
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-// =====================================================
-// DISCIPLINA DO NOME DO ARQUIVO
-// =====================================================
-
-function extrairDisciplinaNomeArquivo(nomeArquivo) {
-  const nomeSemExt = nomeArquivo.replace(
-    /\.[^.]+$/,
-    ""
-  );
-
-  const regex =
-    /SIMULADO\s+(?:ESSENCIAL|B[ÁA]SICO)\s*-\s*(.*?)\s*-\s*\d+\s*[º°O]?\s*BIMESTRE/i;
-
-  const match = nomeSemExt.match(regex);
-
-  if (match && match[1]) {
-    return match[1]
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  return "";
-}
-
-// =====================================================
-// METADADOS
-// =====================================================
-
-function montarMetadados(
-  nomeArquivo,
-  tipoArquivo
-) {
-  const serieInfo =
-    extrairSerieENivel(nomeArquivo);
-
-  return {
-    id_arquivo:
-      extrairIdArquivo(nomeArquivo),
-
-    serie:
-      serieInfo.serie,
-
-    nivel:
-      serieInfo.nivel,
-
-    nivel_serie:
-      serieInfo.nivel_serie,
-
-    tipo_simulado:
-      extrairTipoSimulado(nomeArquivo),
-
-    disciplina_nome_arquivo:
-      extrairDisciplinaNomeArquivo(
-        nomeArquivo
-      ),
-
-    bimestre:
-      extrairBimestre(nomeArquivo),
-
-    // UNIDADE NÃO RECEBE ESCOLA DO NOME
-    escola:
-      tipoArquivo === "unidade"
-        ? ""
-        : extrairEscola(nomeArquivo),
-
-    ano:
-      extrairAno(nomeArquivo)
-  };
-}
-
-// =====================================================
-// LEITURA DA PLANILHA
-// =====================================================
-
-function sheetToObjects(ws) {
-  let linhas = XLSX.utils.sheet_to_json(
-    ws,
     {
-      header: 1,
-      defval: ""
-    }
-  );
+        nome: "ASUMA",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMWFlMGIzZmMtZmIyOS00OTI4LWI3MTItNGEyMWFlYjQ2NDEyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-  if (
-    !linhas ||
-    !linhas.length
-  ) {
-    return [];
-  }
+    {
+        nome: "AMA",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiY2U1ZTM1OGMtODY4OS00MmRiLWE3OGEtNmVhZmRjNjBjMDhjIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-  // =================================================
-  // REMOVE SEMPRE A PRIMEIRA LINHA
-  // =================================================
+    {
+        nome: "ANPA",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiNmI5NTVjNTUtZDgxOS00ZjRlLWFlNmYtYTcxZGI4NTNhOTBmIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-  linhas = linhas.slice(1);
+    {
+        nome: "BLUMENAU",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiYmMzZjI1ZjQtZjc0ZC00NDhhLWEzNTctYjQzNjFlZWYzMTlkIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-  if (!linhas.length) {
-    return [];
-  }
+    {
+        nome: "CAMPINAS",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMTAxOTQzY2UtMjNhMC00OWY1LTgzMDMtNjc5Njg3ODc1MGYyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-  // =================================================
-  // NOVA PRIMEIRA LINHA = CABEÇALHO
-  // =================================================
+    {
+        nome: "IABC",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMWUyOWYzYTQtMTY4NC00Mzk4LWFiNGQtZGQxZThiYmM0MTEzIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-  const headers =
-    (linhas[0] || []).map(
-      h => normalizarCabecalho(h)
-    );
+    {
+        nome: "IAESC",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMTEyYzExYTItZjlhZC00NzJjLTgwYzQtY2YxNWIzNTZkZTQyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-  const dados = [];
+    {
+        nome: "MNEM",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiZTNjYjQ4YTYtMjZmNC00YTBlLWI5OWQtNWE5ZjBmOWI5NDU2IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-  for (
-    let i = 1;
-    i < linhas.length;
-    i++
-  ) {
-    const row = linhas[i];
+    {
+        nome: "MTO",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiYmRhOTVkNWUtNzcxZi00N2JjLWFkNTQtYjY5Y2VjYmM1N2EyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-    const obj = {};
+    {
+        nome: "AP",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMzE1ZjU4M2YtMTIyNS00MzIwLTgwZjgtNTE4MTNkY2I2NTY3IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-    headers.forEach(
-      (h, idx) => {
+    {
+        nome: "APSE",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMWYwNDA2N2QtNjg1MC00ZjRiLTgyMTItMWFkMDZmOTkxYTZiIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-        obj[
-          h ||
-          `COLUNA_${idx + 1}`
-        ] =
-          row[idx] ?? "";
-      }
-    );
+    {
+        nome: "ALM",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiNjdjNTE2ZDQtZjIxNy00NjE3LWJkYzgtMzAwY2UxODk5YTE3IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-    const temValor =
-      Object.values(obj).some(
-        v =>
-          String(v).trim() !== ""
-      );
+    {
+        nome: "UNASP",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMDFmMjNlMzktOGRjYy00YTlkLWFjNGQtMzQ4MTg1MjMzZmM0IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-    if (temValor) {
-      dados.push(obj);
-    }
-  }
+    {
+        nome: "UNEB",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiZDg2YTg5ZGEtMzM0Ny00Zjk1LWEyYWYtZTFjNjE4MDFiNzM2IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-  return dados;
-}
+    {
+        nome: "UNOB",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMDI4M2VmMTEtYThhNC00MjM1LWEyOWMtOWJlMzMyOWE1M2VhIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-// =====================================================
-// PROCURA UMA COLUNA POR ALIASES
-// =====================================================
+    {
+        nome: "USB",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMDI4M2VmMTEtYThhNC00MjM1LWEyOWMtOWJlMzMyOWE1M2VhIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-function firstValue(
-  obj,
-  aliases
-) {
-  for (
-    const alias of aliases
-  ) {
-    for (
-      const key of Object.keys(obj)
-    ) {
-      if (
-        normalizarTexto(key) ===
-        normalizarTexto(alias)
-      ) {
-        return obj[key] ?? "";
-      }
-    }
-  }
+    {
+        nome: "ACP",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiNDg1YjMyZGQtYTZmOC00MTJkLWE2YTMtNjgzYTQwMzdiNmVlIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-  return "";
-}
+    {
+        nome: "ACSR",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMmQzNGRiNzItYjA1Zi00ZTA4LTg5MjctYzk4NjY3YmFmMDVjIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
 
-// =====================================================
-// MATÉRIAS DO ARQUIVO ALUNOS
-// =====================================================
-
-function detectarMateriasPorPadrao(
-  headers,
-  indiceInicial = 0
-) {
-  const resultado = [];
-
-  for (
-    let i = indiceInicial;
-    i < headers.length;
-    i++
-  ) {
-    const atual =
-      normalizarCabecalho(
-        headers[i]
-      );
-
-    if (!atual) {
-      continue;
+    {
+        nome: "IAP",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiMTE5ODA1NmMtMWFlNC00NDkxLWIwN2ItNmI1OWFkNDE3OTVhIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     }
 
-    const atualNorm =
-      normalizarTexto(atual);
+];
 
-    if (
-      atual.includes("%") &&
-      !atualNorm.includes("TOTAL") &&
-      !atualNorm.includes(
-        "PERCENTUAL DE PARTICIPANTES"
-      )
-    ) {
-      const base =
-        atual
-          .replace("%", "")
-          .trim();
 
-      const colunaNota =
-        headers.find(h => {
+// ============================================================
+// ELEMENTOS
+// ============================================================
 
-          const t =
-            normalizarCabecalho(h);
+const listaDashboards =
+    document.getElementById("listaDashboards");
 
-          const baseNorm =
-            normalizarTexto(base);
+const campoPesquisa =
+    document.getElementById("campoPesquisa");
 
-          const tNorm =
-            normalizarTexto(t);
+const quantidadeDashboards =
+    document.getElementById("quantidadeDashboards");
 
-          return (
-            tNorm.startsWith(
-              baseNorm + " ("
-            ) ||
-            tNorm.startsWith(
-              baseNorm + "("
-            )
-          );
-        });
+const nenhumResultado =
+    document.getElementById("nenhumResultado");
 
-      if (colunaNota) {
-        resultado.push({
-          disciplina: base,
-          colunaPercentual:
-            headers[i],
-          colunaNota:
-            colunaNota
-        });
-      }
-    }
-  }
 
-  return resultado;
-}
+// ============================================================
+// ENCURTAR LINK
+// ============================================================
 
-// =====================================================
-// DISCIPLINAS DO ARQUIVO UNIDADE
-// Tudo depois de "Percentual de participantes"
-// =====================================================
+function encurtarLink(link) {
 
-function detectarDisciplinasUnidade(
-  headers
-) {
-  const idxBase =
-    headers.findIndex(h =>
-      normalizarTexto(h) ===
-      "PERCENTUAL DE PARTICIPANTES"
-    );
-
-  if (idxBase === -1) {
-    return [];
-  }
-
-  const resultado = [];
-
-  for (
-    let i = idxBase + 1;
-    i < headers.length;
-    i++
-  ) {
-    const col =
-      normalizarCabecalho(
-        headers[i]
-      );
-
-    if (!col) {
-      continue;
+    if (link.length <= 60) {
+        return link;
     }
 
-    const colNorm =
-      normalizarTexto(col);
-
-    if (
-      !colNorm.startsWith(
-        "COLUNA "
-      )
-    ) {
-      resultado.push(col);
-    }
-  }
-
-  return resultado;
-}
-
-// =====================================================
-// PADRONIZA ALUNOS
-// =====================================================
-
-function padronizarCabecalhoAlunos(
-  linhas
-) {
-  return linhas.map(l => {
-
-    const novo = {};
-
-    ALUNOS_HEADERS.forEach(
-      h => novo[h] = ""
+    return (
+        link.substring(0, 38) +
+        "..." +
+        link.substring(link.length - 15)
     );
-
-    META_COLS.forEach(
-      c => novo[c] =
-        l[c] ?? ""
-    );
-
-    novo["Alunos"] =
-      l["Alunos"] ?? "";
-
-    novo["RA"] =
-      l["RA"] ?? "";
-
-    novo["Turma"] =
-      l["Turma"] ?? "";
-
-    novo["Início"] =
-      l["Início"] ?? "";
-
-    novo["Fim"] =
-      l["Fim"] ?? "";
-
-    novo["Tempo"] =
-      l["Tempo"] ?? "";
-
-    novo["Total (%)"] =
-      l["Total (%)"] ?? "";
-
-    novo["Total (23)"] =
-      l["Total (23)"] ?? "";
-
-    novo["disciplina"] =
-      l["disciplina"] ?? "";
-
-    return novo;
-  });
 }
 
-// =====================================================
-// PADRONIZA UNIDADE
-// =====================================================
 
-function padronizarCabecalhoUnidade(
-  linhas
-) {
-  return linhas.map(l => {
-
-    const novo = {};
-
-    UNIDADE_HEADERS.forEach(
-      h => novo[h] = ""
-    );
-
-    META_COLS.forEach(
-      c => novo[c] =
-        l[c] ?? ""
-    );
-
-    // GARANTIA:
-    // unidade nunca recebe escola
-    novo["escola"] = "";
-
-    novo["União"] =
-      l["União"] ?? "";
-
-    novo["Campo"] =
-      l["Campo"] ?? "";
-
-    novo["Unidade"] =
-      l["Unidade"] ?? "";
-
-    novo["Início"] =
-      l["Início"] ?? "";
-
-    novo["Fim"] =
-      l["Fim"] ?? "";
-
-    novo["Participantes"] =
-      l["Participantes"] ?? "";
-
-    novo["Participantes esperados"] =
-      l["Participantes esperados"] ?? "";
-
-    novo["Percentual de participantes"] =
-      l["Percentual de participantes"] ??
-      "";
-
-    novo["disciplina"] =
-      l["disciplina"] ?? "";
-
-    novo["Nota"] =
-      l["Nota"] ?? "";
-
-    return novo;
-  });
-}
-
-// =====================================================
-// PADRONIZA MAPA
-// =====================================================
-
-function padronizarCabecalhoMapa(
-  linhas
-) {
-  return linhas.map(l => {
-
-    const novo = {};
-
-    MAPA_HEADERS.forEach(
-      h => novo[h] = ""
-    );
-
-    META_COLS.forEach(
-      c => novo[c] =
-        l[c] ?? ""
-    );
-
-    novo["Code"] =
-      l["Code"] ?? "";
-
-    novo["Disciplina"] =
-      l["Disciplina"] ?? "";
-
-    novo["Conteúdo/Habilidade"] =
-      l["Conteúdo/Habilidade"] ??
-      "";
-
-    novo["Dificuldade"] =
-      l["Dificuldade"] ?? "";
-
-    novo["Gabarito"] =
-      l["Gabarito"] ?? "";
-
-    return novo;
-  });
-}
-
-// =====================================================
-// PADRONIZA QUESTÃO
-// =====================================================
-
-function padronizarCabecalhoQuestao(
-  linhas
-) {
-  return linhas.map(l => {
-
-    const novo = {};
-
-    QUESTAO_HEADERS.forEach(
-      h => novo[h] = ""
-    );
-
-    META_COLS.forEach(
-      c => novo[c] =
-        l[c] ?? ""
-    );
-
-    novo["#"] =
-      l["#"] ?? "";
-
-    novo["Código"] =
-      l["Código"] ?? "";
-
-    novo["Disciplina"] =
-      l["Disciplina"] ?? "";
-
-    novo["Habilidade/Conteúdo"] =
-      l["Habilidade/Conteúdo"] ??
-      "";
-
-    novo["Dificuldade"] =
-      l["Dificuldade"] ?? "";
-
-    novo["Gabarito"] =
-      l["Gabarito"] ?? "";
-
-    novo["% Acertos"] =
-      l["% Acertos"] ?? "";
-
-    novo["% Erros"] =
-      l["% Erros"] ?? "";
-
-    return novo;
-  });
-}
-
-// =====================================================
-// TRANSFORMA ALUNOS
-// =====================================================
-
-function transformarAlunos(
-  dados,
-  meta
-) {
-  if (!dados.length) {
-    return [];
-  }
-
-  const headers =
-    Object.keys(dados[0]);
-
-  const idxTempo =
-    headers.findIndex(
-      h =>
-        normalizarTexto(h) ===
-        "TEMPO"
-    );
-
-  const idxTotal =
-    headers.findIndex(
-      h =>
-        normalizarTexto(h)
-          .startsWith("TOTAL")
-    );
-
-  const materias =
-    detectarMateriasPorPadrao(
-      headers,
-      idxTempo >= 0
-        ? idxTempo + 1
-        : 0
-    )
-    .filter(m => {
-
-      const idxPerc =
-        headers.indexOf(
-          m.colunaPercentual
-        );
-
-      return (
-        idxTotal === -1 ||
-        idxPerc < idxTotal
-      );
-    });
-
-  let resultado = [];
-
-  if (!materias.length) {
-
-    resultado =
-      dados.map(l => ({
-        ...meta,
-
-        "Alunos":
-          firstValue(
-            l,
-            [
-              "Alunos",
-              "Aluno"
-            ]
-          ),
-
-        "RA":
-          firstValue(
-            l,
-            ["RA"]
-          ),
-
-        "Turma":
-          firstValue(
-            l,
-            ["Turma"]
-          ),
-
-        "Início":
-          firstValue(
-            l,
-            [
-              "Início",
-              "Inicio"
-            ]
-          ),
-
-        "Fim":
-          firstValue(
-            l,
-            ["Fim"]
-          ),
-
-        "Tempo":
-          firstValue(
-            l,
-            ["Tempo"]
-          ),
-
-        "Total (%)":
-          firstValue(
-            l,
-            ["Total (%)"]
-          ),
-
-        "Total (23)":
-          firstValue(
-            l,
-            [
-              "Total (23)",
-              "Total (30)",
-              "Total (20)",
-              "Total (15)",
-              "Total (12)",
-              "Total (10)",
-              "Total (8)",
-              "Total (6)",
-              "Total"
-            ]
-          ),
-
-        "disciplina":
-          firstValue(
-            l,
-            ["Disciplina"]
-          )
-      }));
-
-  } else {
-
-    for (
-      const linha of dados
-    ) {
-
-      for (
-        const mat of materias
-      ) {
-
-        resultado.push({
-          ...meta,
-
-          "Alunos":
-            firstValue(
-              linha,
-              [
-                "Alunos",
-                "Aluno"
-              ]
-            ),
-
-          "RA":
-            firstValue(
-              linha,
-              ["RA"]
-            ),
-
-          "Turma":
-            firstValue(
-              linha,
-              ["Turma"]
-            ),
-
-          "Início":
-            firstValue(
-              linha,
-              [
-                "Início",
-                "Inicio"
-              ]
-            ),
-
-          "Fim":
-            firstValue(
-              linha,
-              ["Fim"]
-            ),
-
-          "Tempo":
-            firstValue(
-              linha,
-              ["Tempo"]
-            ),
-
-          "Total (%)":
-            firstValue(
-              linha,
-              ["Total (%)"]
-            ),
-
-          "Total (23)":
-            firstValue(
-              linha,
-              [
-                "Total (23)",
-                "Total (30)",
-                "Total (20)",
-                "Total (15)",
-                "Total (12)",
-                "Total (10)",
-                "Total (8)",
-                "Total (6)",
-                "Total"
-              ]
-            ),
-
-          "disciplina":
-            mat.disciplina
-        });
-      }
-    }
-  }
-
-  return padronizarCabecalhoAlunos(
-    resultado
-  );
-}
-
-// =====================================================
-// TRANSFORMA UNIDADE
-// =====================================================
-
-function transformarUnidade(
-  dados,
-  meta
-) {
-  if (!dados.length) {
-    return [];
-  }
-
-  const headers =
-    Object.keys(dados[0]);
-
-  const disciplinas =
-    detectarDisciplinasUnidade(
-      headers
-    );
-
-  log(
-    `   Disciplinas unidade: ${
-      disciplinas.length
-        ? disciplinas.join(", ")
-        : "nenhuma"
-    }`
-  );
-
-  const resultado = [];
-
-  for (
-    const linha of dados
-  ) {
-
-    const base = {
-      ...meta,
-
-      escola: "",
-
-      "União":
-        firstValue(
-          linha,
-          [
-            "União",
-            "Uniao"
-          ]
-        ),
-
-      "Campo":
-        firstValue(
-          linha,
-          ["Campo"]
-        ),
-
-      "Unidade":
-        firstValue(
-          linha,
-          ["Unidade"]
-        ),
-
-      "Início":
-        firstValue(
-          linha,
-          [
-            "Início",
-            "Inicio"
-          ]
-        ),
-
-      "Fim":
-        firstValue(
-          linha,
-          ["Fim"]
-        ),
-
-      "Participantes":
-        firstValue(
-          linha,
-          ["Participantes"]
-        ),
-
-      "Participantes esperados":
-        firstValue(
-          linha,
-          [
-            "Participantes esperados",
-            "Participantes Esperados"
-          ]
-        ),
-
-      "Percentual de participantes":
-        firstValue(
-          linha,
-          [
-            "Percentual de participantes",
-            "Percentual"
-          ]
-        )
-    };
-
-    if (!disciplinas.length) {
-
-      resultado.push({
-        ...base,
-        disciplina: "",
-        Nota: ""
-      });
-
-      continue;
-    }
-
-    // ===============================================
-    // CADA DISCIPLINA VIRA UMA LINHA
-    // ===============================================
-
-    for (
-      const disciplina of disciplinas
-    ) {
-
-      resultado.push({
-        ...base,
-
-        disciplina:
-          disciplina,
-
-        Nota:
-          linha[disciplina] ?? ""
-      });
-    }
-  }
-
-  return padronizarCabecalhoUnidade(
-    resultado
-  );
-}
-
-// =====================================================
-// TRANSFORMA MAPA
-// =====================================================
-
-function transformarMapa(
-  dados,
-  meta
-) {
-  const linhas =
-    dados.map(l => ({
-      ...meta,
-
-      "Code":
-        firstValue(
-          l,
-          [
-            "Code",
-            "Código",
-            "Codigo"
-          ]
-        ),
-
-      "Disciplina":
-        firstValue(
-          l,
-          ["Disciplina"]
-        ),
-
-      "Conteúdo/Habilidade":
-        firstValue(
-          l,
-          [
-            "Conteúdo/Habilidade",
-            "Conteudo/Habilidade",
-            "Habilidade/Conteúdo",
-            "Habilidade/Conteudo"
-          ]
-        ),
-
-      "Dificuldade":
-        firstValue(
-          l,
-          ["Dificuldade"]
-        ),
-
-      "Gabarito":
-        firstValue(
-          l,
-          ["Gabarito"]
-        )
-    }));
-
-  return padronizarCabecalhoMapa(
-    linhas
-  );
-}
-
-// =====================================================
-// TRANSFORMA QUESTÃO
-// =====================================================
-
-function transformarQuestao(
-  dados,
-  meta
-) {
-  const linhas =
-    dados.map(l => ({
-      ...meta,
-
-      "#":
-        firstValue(
-          l,
-          [
-            "#",
-            "Nº",
-            "No"
-          ]
-        ),
-
-      "Código":
-        firstValue(
-          l,
-          [
-            "Código",
-            "Codigo",
-            "Code"
-          ]
-        ),
-
-      "Disciplina":
-        firstValue(
-          l,
-          ["Disciplina"]
-        ),
-
-      "Habilidade/Conteúdo":
-        firstValue(
-          l,
-          [
-            "Habilidade/Conteúdo",
-            "Habilidade/Conteudo",
-            "Conteúdo/Habilidade",
-            "Conteudo/Habilidade"
-          ]
-        ),
-
-      "Dificuldade":
-        firstValue(
-          l,
-          ["Dificuldade"]
-        ),
-
-      "Gabarito":
-        firstValue(
-          l,
-          ["Gabarito"]
-        ),
-
-      "% Acertos":
-        firstValue(
-          l,
-          [
-            "% Acertos",
-            "% Acerto"
-          ]
-        ),
-
-      "% Erros":
-        firstValue(
-          l,
-          [
-            "% Erros",
-            "% Erro"
-          ]
-        )
-    }));
-
-  return padronizarCabecalhoQuestao(
-    linhas
-  );
-}
-
-// =====================================================
-// LEITURA DO ARQUIVO
-// =====================================================
-
-async function lerArquivo(file) {
-  const buffer =
-    await file.arrayBuffer();
-
-  const wb =
-    XLSX.read(
-      buffer,
-      {
-        type: "array"
-      }
-    );
-
-  const primeiraAba =
-    wb.SheetNames[0];
-
-  const ws =
-    wb.Sheets[
-      primeiraAba
-    ];
-
-  return sheetToObjects(ws);
-}
-
-// =====================================================
-// FUNÇÕES DE LINK
-// =====================================================
-
-function escaparHTML(texto) {
-  return String(
-    texto ?? ""
-  )
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-// =====================================================
-// VERIFICA SE O VALOR É LINK
-// =====================================================
-
-function ehLink(valor) {
-  if (!valor) {
-    return false;
-  }
-
-  const v =
-    String(valor).trim();
-
-  return (
-    v.startsWith("http://") ||
-    v.startsWith("https://")
-  );
-}
-
-// =====================================================
-// VERIFICA SE A COLUNA É DE LINK
-// =====================================================
-
-function ehColunaLink(nomeColuna) {
-  const n =
-    normalizarTexto(
-      nomeColuna
-    );
-
-  return (
-    n === "LINK" ||
-    n.includes("LINK ") ||
-    n.includes(" LINK") ||
-    n === "URL" ||
-    n.includes("URL ") ||
-    n.includes(" URL")
-  );
-}
-
-// =====================================================
-// ENCURTAR LINK NA TELA
-// =====================================================
-
-function encurtarLink(
-  link,
-  tamanhoInicio = 35,
-  tamanhoFim = 15
-) {
-  if (!link) {
-    return "";
-  }
-
-  const texto =
-    String(link);
-
-  if (
-    texto.length <=
-    tamanhoInicio +
-      tamanhoFim +
-      3
-  ) {
-    return texto;
-  }
-
-  return (
-    texto.substring(
-      0,
-      tamanhoInicio
-    ) +
-    "..." +
-    texto.substring(
-      texto.length -
-      tamanhoFim
-    )
-  );
-}
-
-// =====================================================
+// ============================================================
 // COPIAR LINK
-// =====================================================
+// ============================================================
 
-async function copiarLink(
-  link,
-  botao
-) {
-  try {
+async function copiarLink(link, botao) {
 
-    if (
-      navigator.clipboard &&
-      window.isSecureContext
-    ) {
-
-      await navigator.clipboard.writeText(
-        link
-      );
-
-    } else {
-
-      const textarea =
-        document.createElement(
-          "textarea"
-        );
-
-      textarea.value =
-        link;
-
-      textarea.style.position =
-        "fixed";
-
-      textarea.style.left =
-        "-9999px";
-
-      document.body.appendChild(
-        textarea
-      );
-
-      textarea.focus();
-      textarea.select();
-
-      document.execCommand(
-        "copy"
-      );
-
-      document.body.removeChild(
-        textarea
-      );
-    }
-
-    const original =
-      botao.innerHTML;
-
-    botao.innerHTML = "✓";
-    botao.title =
-      "Link copiado";
-
-    setTimeout(
-      () => {
-        botao.innerHTML =
-          original;
-
-        botao.title =
-          "Copiar link";
-      },
-      1500
-    );
-
-  } catch (erro) {
-
-    console.error(
-      "Erro ao copiar:",
-      erro
-    );
-
-    alert(
-      "Não foi possível copiar o link."
-    );
-  }
-}
-
-// =====================================================
-// CRIA VISUAL DO LINK
-// =====================================================
-
-function criarLinkComCopia(
-  link
-) {
-  if (!link) {
-    return "";
-  }
-
-  const linkOriginal =
-    String(link);
-
-  const linkSeguro =
-    escaparHTML(
-      linkOriginal
-    );
-
-  const linkCurto =
-    escaparHTML(
-      encurtarLink(
-        linkOriginal
-      )
-    );
-
-  return `
-    <div
-      style="
-        display:flex;
-        align-items:center;
-        gap:6px;
-        max-width:320px;
-      "
-    >
-
-      <a
-        href="${linkSeguro}"
-        target="_blank"
-        rel="noopener noreferrer"
-        title="${linkSeguro}"
-        style="
-          display:inline-block;
-          max-width:260px;
-          overflow:hidden;
-          white-space:nowrap;
-          text-overflow:ellipsis;
-          color:#1265b0;
-          text-decoration:none;
-        "
-      >
-        ${linkCurto}
-      </a>
-
-      <button
-        type="button"
-        onclick='copiarLink(${JSON.stringify(linkOriginal)}, this)'
-        title="Copiar link"
-        style="
-          border:none;
-          background:transparent;
-          cursor:pointer;
-          font-size:17px;
-          padding:4px 6px;
-        "
-      >
-        📋
-      </button>
-
-    </div>
-  `;
-}
-
-// =====================================================
-// PREVIEW
-// =====================================================
-
-function mostrarPreview(
-  linhas
-) {
-  const preview =
-    document.getElementById(
-      "preview"
-    );
-
-  if (!preview) {
-    return;
-  }
-
-  if (
-    !linhas ||
-    !linhas.length
-  ) {
-    preview.innerHTML = "";
-    return;
-  }
-
-  const primeiros =
-    linhas.slice(
-      0,
-      15
-    );
-
-  const colunas =
-    Object.keys(
-      primeiros[0]
-    );
-
-  let html =
-    "<table><thead><tr>";
-
-  colunas.forEach(
-    col => {
-
-      html += `
-        <th>
-          ${escaparHTML(col)}
-        </th>
-      `;
-    }
-  );
-
-  html +=
-    "</tr></thead><tbody>";
-
-  primeiros.forEach(
-    linha => {
-
-      html += "<tr>";
-
-      colunas.forEach(
-        col => {
-
-          const valor =
-            linha[col] ?? "";
-
-          if (
-            ehColunaLink(col) ||
-            ehLink(valor)
-          ) {
-
-            html += `
-              <td>
-                ${criarLinkComCopia(
-                  valor
-                )}
-              </td>
-            `;
-
-          } else {
-
-            html += `
-              <td>
-                ${escaparHTML(
-                  valor
-                )}
-              </td>
-            `;
-          }
-        }
-      );
-
-      html += "</tr>";
-    }
-  );
-
-  html +=
-    "</tbody></table>";
-
-  preview.innerHTML =
-    html;
-}
-
-// =====================================================
-// PROCESSAMENTO PRINCIPAL
-// =====================================================
-
-async function processarArquivos() {
-  limparLog();
-
-  const input =
-    document.getElementById(
-      "files"
-    );
-
-  const files =
-    Array.from(
-      input?.files || []
-    );
-
-  if (!files.length) {
-
-    alert(
-      "Selecione os arquivos."
-    );
-
-    return;
-  }
-
-  const abas = {
-    alunos: [],
-    unidade: [],
-    mapa: [],
-    questao: [],
-    desconhecido: []
-  };
-
-  for (
-    const file of files
-  ) {
     try {
 
-      log(
-        `📂 Lendo: ${file.name}`
-      );
+        await navigator.clipboard.writeText(link);
 
-      const tipo =
-        detectarTipoArquivo(
-          file.name
-        );
+        const original = botao.innerHTML;
 
-      const meta =
-        montarMetadados(
-          file.name,
-          tipo
-        );
+        botao.innerHTML = "✓";
+        botao.title = "Link copiado";
 
-      const dados =
-        await lerArquivo(
-          file
-        );
-
-      log(
-        `   Tipo: ${tipo}`
-      );
-
-      log(
-        `   ID: ${
-          meta.id_arquivo ||
-          "(não encontrado)"
-        }`
-      );
-
-      log(
-        `   Série: ${
-          meta.serie ||
-          "(não encontrada)"
-        }`
-      );
-
-      log(
-        `   Nível: ${
-          meta.nivel ||
-          "(não encontrado)"
-        }`
-      );
-
-      log(
-        `   Nível/Série: ${
-          meta.nivel_serie ||
-          "(não encontrado)"
-        }`
-      );
-
-      log(
-        `   Simulado: ${
-          meta.tipo_simulado ||
-          "(não encontrado)"
-        }`
-      );
-
-      log(
-        `   Disciplina: ${
-          meta.disciplina_nome_arquivo ||
-          "(não encontrada)"
-        }`
-      );
-
-      log(
-        `   Bimestre: ${
-          meta.bimestre ||
-          "(não encontrado)"
-        }`
-      );
-
-      if (
-        tipo !== "unidade"
-      ) {
-        log(
-          `   Escola: ${
-            meta.escola ||
-            "(não encontrada)"
-          }`
-        );
-      }
-
-      log(
-        `   Ano: ${
-          meta.ano ||
-          "(não encontrado)"
-        }`
-      );
-
-      log(
-        `   Linhas lidas: ${
-          dados.length
-        }`
-      );
-
-      let transformado = [];
-
-      if (
-        tipo === "alunos"
-      ) {
-
-        transformado =
-          transformarAlunos(
-            dados,
-            meta
-          );
-
-      } else if (
-        tipo === "unidade"
-      ) {
-
-        transformado =
-          transformarUnidade(
-            dados,
-            meta
-          );
-
-      } else if (
-        tipo === "mapa"
-      ) {
-
-        transformado =
-          transformarMapa(
-            dados,
-            meta
-          );
-
-      } else if (
-        tipo === "questao"
-      ) {
-
-        transformado =
-          transformarQuestao(
-            dados,
-            meta
-          );
-
-      } else {
-
-        transformado =
-          dados.map(
-            l => ({
-              ...meta,
-              ...l
-            })
-          );
-      }
-
-      abas[tipo] =
-        abas[tipo].concat(
-          transformado
-        );
-
-      previewData =
-        previewData.concat(
-          transformado.slice(
-            0,
-            5
-          )
-        );
-
-      log(
-        `   ✅ Linhas finais: ${
-          transformado.length
-        }`
-      );
+        setTimeout(() => {
+            botao.innerHTML = original;
+            botao.title = "Copiar link";
+        }, 1500);
 
     } catch (erro) {
 
-      console.error(
-        erro
-      );
+        const textarea =
+            document.createElement("textarea");
 
-      log(
-        `   ❌ Erro em ${
-          file.name
-        }: ${
-          erro.message
-        }`
-      );
+        textarea.value = link;
+
+        document.body.appendChild(textarea);
+
+        textarea.select();
+
+        document.execCommand("copy");
+
+        document.body.removeChild(textarea);
+
+        botao.innerHTML = "✓";
+
+        setTimeout(() => {
+            botao.innerHTML = "📋";
+        }, 1500);
     }
-  }
+}
 
-  // ===================================================
-  // CRIA EXCEL FINAL
-  // ===================================================
 
-  workbookFinal =
-    XLSX.utils.book_new();
+// ============================================================
+// CRIAR CARD
+// ============================================================
 
-  Object.entries(
-    abas
-  ).forEach(
-    ([nomeAba, linhas]) => {
+function criarCard(dashboard) {
 
-      if (
-        !linhas.length
-      ) {
+    const card =
+        document.createElement("div");
+
+    card.className = "dashboard-card";
+
+    card.dataset.nome =
+        dashboard.nome.toLowerCase();
+
+
+    card.innerHTML = `
+
+        <div class="card-header">
+
+            <h3>
+                ${dashboard.nome}
+            </h3>
+
+            <a
+                href="${dashboard.link}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="icon-box"
+                title="Abrir dashboard"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                >
+                    <path
+                        d="M14 4H20V10"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M10 14L20 4"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M20 14V20H4V4H10"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                </svg>
+
+            </a>
+
+        </div>
+
+
+        <p>
+            Clique para abrir o dashboard do Power BI
+        </p>
+
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                gap:8px;
+                margin-top:12px;
+            "
+        >
+
+            <a
+                href="${dashboard.link}"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="${dashboard.link}"
+                style="
+                    min-width:0;
+                    flex:1;
+                    overflow:hidden;
+                    white-space:nowrap;
+                    text-overflow:ellipsis;
+                    font-size:12px;
+                    color:#4f6f8f;
+                    text-decoration:none;
+                "
+            >
+                ${encurtarLink(dashboard.link)}
+            </a>
+
+
+            <button
+                type="button"
+                class="btn-copiar-link"
+                title="Copiar link"
+                style="
+                    border:none;
+                    background:transparent;
+                    cursor:pointer;
+                    font-size:17px;
+                    padding:4px;
+                "
+            >
+                📋
+            </button>
+
+        </div>
+
+    `;
+
+
+    // Botão copiar
+    const botaoCopiar =
+        card.querySelector(".btn-copiar-link");
+
+    botaoCopiar.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            copiarLink(
+                dashboard.link,
+                botaoCopiar
+            );
+        }
+    );
+
+
+    return card;
+}
+
+
+// ============================================================
+// MOSTRAR DASHBOARDS
+// ============================================================
+
+function renderizarDashboards(lista) {
+
+    listaDashboards.innerHTML = "";
+
+    quantidadeDashboards.textContent =
+        `${lista.length} dashboard${
+            lista.length !== 1 ? "s" : ""
+        } disponíveis`;
+
+
+    if (lista.length === 0) {
+
+        nenhumResultado.style.display =
+            "block";
+
         return;
-      }
+    }
 
-      const ws =
-        XLSX.utils.json_to_sheet(
-          linhas
+
+    nenhumResultado.style.display =
+        "none";
+
+
+    lista.forEach(dashboard => {
+
+        const card =
+            criarCard(dashboard);
+
+        listaDashboards.appendChild(card);
+
+    });
+
+}
+
+
+// ============================================================
+// PESQUISA
+// ============================================================
+
+campoPesquisa.addEventListener(
+    "input",
+    function() {
+
+        const texto =
+            campoPesquisa
+                .value
+                .toLowerCase()
+                .trim();
+
+
+        const filtrados =
+            dashboards.filter(
+                dashboard =>
+                    dashboard.nome
+                        .toLowerCase()
+                        .includes(texto)
+            );
+
+
+        renderizarDashboards(
+            filtrados
         );
 
-      XLSX.utils.book_append_sheet(
-        workbookFinal,
-        ws,
-        nomeAba.substring(
-          0,
-          31
-        )
-      );
     }
-  );
+);
 
-  mostrarPreview(
-    previewData
-  );
 
-  const btnBaixar =
-    document.getElementById(
-      "btnBaixar"
-    );
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
 
-  if (btnBaixar) {
-    btnBaixar.disabled =
-      false;
-  }
-
-  log(
-    "✅ Processamento concluído."
-  );
-}
-
-// =====================================================
-// BAIXAR EXCEL
-// =====================================================
-
-function baixarExcel() {
-  if (!workbookFinal) {
-
-    alert(
-      "Nenhum resultado disponível."
-    );
-
-    return;
-  }
-
-  XLSX.writeFile(
-    workbookFinal,
-    "resultado_pluraal.xlsx"
-  );
-}
-
-// =====================================================
-// EVENTOS
-// =====================================================
-
-document
-  .getElementById(
-    "btnProcessar"
-  )
-  ?.addEventListener(
-    "click",
-    processarArquivos
-  );
-
-document
-  .getElementById(
-    "btnBaixar"
-  )
-  ?.addEventListener(
-    "click",
-    baixarExcel
-  );
+renderizarDashboards(
+    dashboards
+);
