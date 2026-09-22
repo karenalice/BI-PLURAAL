@@ -1,5 +1,5 @@
 // ============================================================
-// DADOS DOS DASHBOARDS
+// DASHBOARDS
 // ============================================================
 
 const dashboards = [
@@ -86,14 +86,21 @@ const dashboards = [
 // ELEMENTOS
 // ============================================================
 
-const listaDashboards = document.getElementById("listaDashboards");
-const campoPesquisa = document.getElementById("campoPesquisa");
-const quantidadeDashboards = document.getElementById("quantidadeDashboards");
-const nenhumResultado = document.getElementById("nenhumResultado");
+const listaDashboards =
+    document.getElementById("listaDashboards");
+
+const campoPesquisa =
+    document.getElementById("campoPesquisa");
+
+const quantidadeDashboards =
+    document.getElementById("quantidadeDashboards");
+
+const nenhumResultado =
+    document.getElementById("nenhumResultado");
 
 
 // ============================================================
-// ESCAPAR HTML
+// UTILIDADES
 // ============================================================
 
 function escaparHTML(texto) {
@@ -104,11 +111,6 @@ function escaparHTML(texto) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
-
-
-// ============================================================
-// NORMALIZAR TEXTO
-// ============================================================
 
 function normalizarPesquisa(texto) {
     return String(texto ?? "")
@@ -124,6 +126,7 @@ function normalizarPesquisa(texto) {
 // ============================================================
 
 function encurtarLink(link) {
+
     const inicio = 38;
     const fim = 16;
 
@@ -131,7 +134,10 @@ function encurtarLink(link) {
         return "";
     }
 
-    if (link.length <= inicio + fim + 3) {
+    if (
+        link.length <=
+        inicio + fim + 3
+    ) {
         return link;
     }
 
@@ -144,29 +150,32 @@ function encurtarLink(link) {
 
 
 // ============================================================
-// COPIAR LINK
+// COPIAR
 // ============================================================
 
 async function copiarLink(link, botao) {
+
     try {
 
-        if (navigator.clipboard && window.isSecureContext) {
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
 
             await navigator.clipboard.writeText(link);
 
         } else {
 
-            const textarea = document.createElement("textarea");
+            const textarea =
+                document.createElement("textarea");
 
             textarea.value = link;
 
             textarea.style.position = "fixed";
             textarea.style.left = "-9999px";
-            textarea.style.top = "-9999px";
 
             document.body.appendChild(textarea);
 
-            textarea.focus();
             textarea.select();
 
             document.execCommand("copy");
@@ -178,24 +187,33 @@ async function copiarLink(link, botao) {
 
     } catch (erro) {
 
-        console.error("Erro ao copiar link:", erro);
+        console.error(erro);
 
-        alert("Não foi possível copiar o link.");
+        alert(
+            "Não foi possível copiar o link."
+        );
     }
 }
 
 
 // ============================================================
-// FEEDBACK COPIADO
+// FEEDBACK
 // ============================================================
 
 function mostrarCopiado(botao) {
-    const original = botao.innerHTML;
 
-    botao.classList.add("copiado");
+    const original =
+        botao.innerHTML;
+
+    botao.classList.add(
+        "copiado"
+    );
 
     botao.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="none">
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+        >
             <path
                 d="M5 12L10 17L19 7"
                 stroke="currentColor"
@@ -206,39 +224,66 @@ function mostrarCopiado(botao) {
         </svg>
     `;
 
-    botao.title = "Link copiado";
+    botao.title =
+        "Link copiado";
 
-    setTimeout(() => {
-        botao.innerHTML = original;
-        botao.title = "Copiar link";
-        botao.classList.remove("copiado");
-    }, 1500);
+    setTimeout(
+        () => {
+
+            botao.innerHTML =
+                original;
+
+            botao.title =
+                "Copiar link";
+
+            botao.classList.remove(
+                "copiado"
+            );
+
+        },
+        1500
+    );
 }
 
 
 // ============================================================
-// CRIAR CARD
+// CARD
 // ============================================================
 
 function criarCard(dashboard) {
 
-    const card = document.createElement("div");
+    const card =
+        document.createElement("div");
 
-    card.className = "dashboard-card";
+    card.className =
+        "dashboard-card";
 
-    card.dataset.nome = dashboard.nome.toLowerCase();
+    const nomeSeguro =
+        escaparHTML(dashboard.nome);
 
-    const nomeSeguro = escaparHTML(dashboard.nome);
-    const linkSeguro = escaparHTML(dashboard.link);
-    const linkCurto = escaparHTML(encurtarLink(dashboard.link));
+    const linkSeguro =
+        escaparHTML(dashboard.link);
+
+    const linkCurto =
+        escaparHTML(
+            encurtarLink(
+                dashboard.link
+            )
+        );
+
 
     card.innerHTML = `
 
         <div class="card-header">
 
             <div class="card-title-area">
-                <h3>${nomeSeguro}</h3>
+
+                <h3>
+                    ${nomeSeguro}
+                </h3>
+
             </div>
+
 
             <a
                 href="${linkSeguro}"
@@ -246,9 +291,13 @@ function criarCard(dashboard) {
                 rel="noopener noreferrer"
                 class="icon-box"
                 title="Abrir dashboard"
-                aria-label="Abrir dashboard ${nomeSeguro}"
             >
-                <svg viewBox="0 0 24 24" fill="none">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                >
+
                     <path
                         d="M14 4H20V10"
                         stroke="currentColor"
@@ -272,14 +321,18 @@ function criarCard(dashboard) {
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     />
+
                 </svg>
+
             </a>
 
         </div>
 
+
         <p class="card-description">
             Clique no ícone para abrir o dashboard do Power BI
         </p>
+
 
         <div class="dashboard-link-area">
 
@@ -293,13 +346,18 @@ function criarCard(dashboard) {
                 ${linkCurto}
             </a>
 
+
             <button
                 type="button"
                 class="btn-copiar-link"
                 title="Copiar link"
-                aria-label="Copiar link do dashboard ${nomeSeguro}"
             >
-                <svg viewBox="0 0 24 24" fill="none">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                >
+
                     <rect
                         x="9"
                         y="9"
@@ -316,70 +374,84 @@ function criarCard(dashboard) {
                         stroke-width="2"
                         stroke-linecap="round"
                     />
+
                 </svg>
+
             </button>
 
         </div>
     `;
 
-    const botaoCopiar = card.querySelector(".btn-copiar-link");
 
-    botaoCopiar.addEventListener("click", function(event) {
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        copiarLink(
-            dashboard.link,
-            botaoCopiar
+    const botaoCopiar =
+        card.querySelector(
+            ".btn-copiar-link"
         );
-    });
+
+
+    botaoCopiar.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            copiarLink(
+                dashboard.link,
+                botaoCopiar
+            );
+
+        }
+    );
+
 
     return card;
 }
 
 
 // ============================================================
-// RENDERIZAR
+// RENDER
 // ============================================================
 
 function renderizarDashboards(lista) {
 
-    if (!listaDashboards) {
-        return;
-    }
-
     listaDashboards.innerHTML = "";
 
-    if (quantidadeDashboards) {
 
-        quantidadeDashboards.textContent =
-            `${lista.length} ${
-                lista.length === 1
-                    ? "dashboard disponível"
-                    : "dashboards disponíveis"
-            }`;
-    }
+    quantidadeDashboards.textContent =
+        `${lista.length} ${
+            lista.length === 1
+                ? "dashboard disponível"
+                : "dashboards disponíveis"
+        }`;
 
-    if (lista.length === 0) {
 
-        if (nenhumResultado) {
-            nenhumResultado.style.display = "block";
-        }
+    if (
+        lista.length === 0
+    ) {
+
+        nenhumResultado.style.display =
+            "block";
 
         return;
     }
 
-    if (nenhumResultado) {
-        nenhumResultado.style.display = "none";
-    }
 
-    lista.forEach(dashboard => {
+    nenhumResultado.style.display =
+        "none";
 
-        const card = criarCard(dashboard);
 
-        listaDashboards.appendChild(card);
-    });
+    lista.forEach(
+        dashboard => {
+
+            const card =
+                criarCard(dashboard);
+
+            listaDashboards.appendChild(
+                card
+            );
+
+        }
+    );
 }
 
 
@@ -389,22 +461,24 @@ function renderizarDashboards(lista) {
 
 function filtrarDashboards() {
 
-    const busca = normalizarPesquisa(
-        campoPesquisa?.value
+    const busca =
+        normalizarPesquisa(
+            campoPesquisa.value
+        );
+
+
+    const filtrados =
+        dashboards.filter(
+            dashboard =>
+                normalizarPesquisa(
+                    dashboard.nome
+                ).includes(busca)
+        );
+
+
+    renderizarDashboards(
+        filtrados
     );
-
-    if (!busca) {
-        renderizarDashboards(dashboards);
-        return;
-    }
-
-    const filtrados = dashboards.filter(
-        dashboard =>
-            normalizarPesquisa(dashboard.nome)
-                .includes(busca)
-    );
-
-    renderizarDashboards(filtrados);
 }
 
 
@@ -412,40 +486,35 @@ function filtrarDashboards() {
 // EVENTOS
 // ============================================================
 
-if (campoPesquisa) {
+campoPesquisa.addEventListener(
+    "input",
+    filtrarDashboards
+);
 
-    campoPesquisa.addEventListener(
-        "input",
-        filtrarDashboards
-    );
 
-    campoPesquisa.addEventListener(
-        "keydown",
-        function(event) {
+campoPesquisa.addEventListener(
+    "keydown",
+    function(event) {
 
-            if (event.key === "Escape") {
+        if (
+            event.key === "Escape"
+        ) {
 
-                campoPesquisa.value = "";
+            campoPesquisa.value = "";
 
-                renderizarDashboards(
-                    dashboards
-                );
-            }
+            renderizarDashboards(
+                dashboards
+            );
+
         }
-    );
-}
+    }
+);
 
 
 // ============================================================
 // INICIALIZAÇÃO
 // ============================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
-
-        renderizarDashboards(
-            dashboards
-        );
-    }
+renderizarDashboards(
+    dashboards
 );
