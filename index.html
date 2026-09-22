@@ -1,199 +1,31 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
+<div class="search-area">
+    <div class="search-box">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+        <span class="search-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                    stroke="currentColor"
+                    stroke-width="2"
+                />
 
-    <title>Power BI Portal</title>
+                <path
+                    d="M20 20L16.5 16.5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                />
+            </svg>
+        </span>
 
-    <!-- CSS externo -->
-    <link rel="stylesheet" href="style.css">
+        <input
+            type="text"
+            id="campoPesquisa"
+            placeholder="Pesquisar dashboard..."
+            autocomplete="off"
+        >
 
-    <!-- JavaScript externo -->
-    <script src="main.js" defer></script>
-</head>
-
-<body>
-
-    <!-- =========================================================
-         TOPO DO PORTAL
-         ========================================================= -->
-    <header class="topbar">
-
-        <div class="topbar-content">
-
-            <div class="brand">
-
-                <img
-                    src="logo.png"
-                    alt="Logo Power BI Portal"
-                    class="brand-logo"
-                >
-
-                <span class="brand-title">
-                    Power BI Portal
-                </span>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <!-- =========================================================
-         ÁREA PRINCIPAL
-         ========================================================= -->
-    <section class="hero">
-
-        <div class="hero-content">
-
-            <img
-                src="logo.png"
-                alt="Logo Portal"
-                class="hero-logo"
-            >
-
-            <h1>
-                Portal de Dashboards
-            </h1>
-
-            <p>
-                Acesso centralizado a todos os dashboards do Power BI.
-                Clique no ícone para visualizar o dashboard.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================================
-         DASHBOARDS
-         ========================================================= -->
-    <main class="container">
-
-        <section class="dashboards-section">
-
-            <div class="section-header">
-
-                <div>
-                    <h2>
-                        Dashboards Disponíveis
-                    </h2>
-
-                    <span
-                        class="subtitle"
-                        id="quantidadeDashboards"
-                    >
-                        Carregando dashboards...
-                    </span>
-                </div>
-
-            </div>
-
-
-            <!-- =====================================================
-                 PESQUISA
-                 ===================================================== -->
-            <div class="search-area">
-
-                <div class="search-box">
-
-                    <span class="search-icon">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <circle
-                                cx="11"
-                                cy="11"
-                                r="7"
-                                stroke="currentColor"
-                                stroke-width="2"
-                            />
-
-                            <path
-                                d="M20 20L16.5 16.5"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                            />
-                        </svg>
-                    </span>
-
-                    <input
-                        type="text"
-                        id="campoPesquisa"
-                        placeholder="Pesquisar dashboard..."
-                        autocomplete="off"
-                    >
-
-                </div>
-
-            </div>
-
-
-            <!-- =====================================================
-                 CARDS
-                 Os cards serão criados automaticamente pelo main.js
-                 ===================================================== -->
-            <div
-                class="cards-grid"
-                id="listaDashboards"
-            >
-            </div>
-
-
-            <!-- =====================================================
-                 SEM RESULTADOS
-                 ===================================================== -->
-            <div
-                id="nenhumResultado"
-                class="nenhum-resultado"
-                style="display:none;"
-            >
-                <div class="nenhum-resultado-icone">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <circle
-                            cx="11"
-                            cy="11"
-                            r="7"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        />
-
-                        <path
-                            d="M20 20L16.5 16.5"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                        />
-                    </svg>
-                </div>
-
-                <p>
-                    Nenhum dashboard encontrado.
-                </p>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- =========================================================
-         RODAPÉ
-         ========================================================= -->
-    <footer class="footer">
-
-        <p>
-            Power BI Portal
-        </p>
-
-    </footer>
-
-</body>
-</html>
+    </div>
+</div>
