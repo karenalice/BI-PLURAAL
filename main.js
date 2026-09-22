@@ -1,109 +1,89 @@
 // ============================================================
-// DASHBOARDS
+// DADOS DOS DASHBOARDS
 // ============================================================
 
 const dashboards = [
-
     {
         nome: "ASUMA",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMWFlMGIzZmMtZmIyOS00OTI4LWI3MTItNGEyMWFlYjQ2NDEyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "AMA",
         link: "https://app.powerbi.com/view?r=eyJrIjoiY2U1ZTM1OGMtODY4OS00MmRiLWE3OGEtNmVhZmRjNjBjMDhjIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "ANPA",
         link: "https://app.powerbi.com/view?r=eyJrIjoiNmI5NTVjNTUtZDgxOS00ZjRlLWFlNmYtYTcxZGI4NTNhOTBmIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "BLUMENAU",
         link: "https://app.powerbi.com/view?r=eyJrIjoiYmMzZjI1ZjQtZjc0ZC00NDhhLWEzNTctYjQzNjFlZWYzMTlkIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "CAMPINAS",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMTAxOTQzY2UtMjNhMC00OWY1LTgzMDMtNjc5Njg3ODc1MGYyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "IABC",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMWUyOWYzYTQtMTY4NC00Mzk4LWFiNGQtZGQxZThiYmM0MTEzIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "IAESC",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMTEyYzExYTItZjlhZC00NzJjLTgwYzQtY2YxNWIzNTZkZTQyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "MNEM",
         link: "https://app.powerbi.com/view?r=eyJrIjoiZTNjYjQ4YTYtMjZmNC00YTBlLWI5OWQtNWE5ZjBmOWI5NDU2IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "MTO",
         link: "https://app.powerbi.com/view?r=eyJrIjoiYmRhOTVkNWUtNzcxZi00N2JjLWFkNTQtYjY5Y2VjYmM1N2EyIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "AP",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMzE1ZjU4M2YtMTIyNS00MzIwLTgwZjgtNTE4MTNkY2I2NTY3IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "APSE",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMWYwNDA2N2QtNjg1MC00ZjRiLTgyMTItMWFkMDZmOTkxYTZiIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "ALM",
         link: "https://app.powerbi.com/view?r=eyJrIjoiNjdjNTE2ZDQtZjIxNy00NjE3LWJkYzgtMzAwY2UxODk5YTE3IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "UNASP",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMDFmMjNlMzktOGRjYy00YTlkLWFjNGQtMzQ4MTg1MjMzZmM0IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "UNEB",
         link: "https://app.powerbi.com/view?r=eyJrIjoiZDg2YTg5ZGEtMzM0Ny00Zjk1LWEyYWYtZTFjNjE4MDFiNzM2IiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "UNOB",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMDI4M2VmMTEtYThhNC00MjM1LWEyOWMtOWJlMzMyOWE1M2VhIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "USB",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMDI4M2VmMTEtYThhNC00MjM1LWEyOWMtOWJlMzMyOWE1M2VhIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "ACP",
         link: "https://app.powerbi.com/view?r=eyJrIjoiNDg1YjMyZGQtYTZmOC00MTJkLWE2YTMtNjgzYTQwMzdiNmVlIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "ACSR",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMmQzNGRiNzItYjA1Zi00ZTA4LTg5MjctYzk4NjY3YmFmMDVjIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     },
-
     {
         nome: "IAP",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMTE5ODA1NmMtMWFlNC00NDkxLWIwN2ItNmI1OWFkNDE3OTVhIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     }
-
 ];
 
 
 // ============================================================
-// ELEMENTOS
+// ELEMENTOS DA PÁGINA
 // ============================================================
 
 const listaDashboards =
@@ -120,20 +100,16 @@ const nenhumResultado =
 
 
 // ============================================================
-// ENCURTAR LINK
+// ESCAPAR TEXTO
 // ============================================================
 
-function encurtarLink(link) {
-
-    if (link.length <= 60) {
-        return link;
-    }
-
-    return (
-        link.substring(0, 38) +
-        "..." +
-        link.substring(link.length - 15)
-    );
+function escaparHTML(texto) {
+    return String(texto ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
@@ -145,39 +121,87 @@ async function copiarLink(link, botao) {
 
     try {
 
-        await navigator.clipboard.writeText(link);
+        if (
+            navigator.clipboard &&
+            window.isSecureContext
+        ) {
 
-        const original = botao.innerHTML;
+            await navigator.clipboard.writeText(link);
 
-        botao.innerHTML = "✓";
-        botao.title = "Link copiado";
+        } else {
 
-        setTimeout(() => {
-            botao.innerHTML = original;
-            botao.title = "Copiar link";
-        }, 1500);
+            const textarea =
+                document.createElement("textarea");
+
+            textarea.value = link;
+
+            textarea.style.position = "fixed";
+            textarea.style.left = "-9999px";
+            textarea.style.top = "-9999px";
+
+            document.body.appendChild(textarea);
+
+            textarea.focus();
+            textarea.select();
+
+            document.execCommand("copy");
+
+            document.body.removeChild(textarea);
+        }
+
+        mostrarCopiado(botao);
 
     } catch (erro) {
 
-        const textarea =
-            document.createElement("textarea");
+        console.error("Erro ao copiar link:", erro);
 
-        textarea.value = link;
-
-        document.body.appendChild(textarea);
-
-        textarea.select();
-
-        document.execCommand("copy");
-
-        document.body.removeChild(textarea);
-
-        botao.innerHTML = "✓";
-
-        setTimeout(() => {
-            botao.innerHTML = "📋";
-        }, 1500);
+        alert("Não foi possível copiar o link.");
     }
+}
+
+
+// ============================================================
+// MOSTRAR STATUS COPIADO
+// ============================================================
+
+function mostrarCopiado(botao) {
+
+    const conteudoOriginal =
+        botao.innerHTML;
+
+    botao.classList.add("copiado");
+
+    botao.innerHTML = `
+        <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            style="
+                width:18px;
+                height:18px;
+            "
+        >
+            <path
+                d="M5 12L10 17L19 7"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+        </svg>
+
+        <span>
+            Copiado
+        </span>
+    `;
+
+    setTimeout(() => {
+
+        botao.innerHTML =
+            conteudoOriginal;
+
+        botao.classList.remove("copiado");
+
+    }, 1600);
 }
 
 
@@ -190,32 +214,51 @@ function criarCard(dashboard) {
     const card =
         document.createElement("div");
 
-    card.className = "dashboard-card";
+    card.className =
+        "dashboard-card";
 
     card.dataset.nome =
-        dashboard.nome.toLowerCase();
+        dashboard.nome
+            .toLowerCase();
+
+
+    const nomeSeguro =
+        escaparHTML(dashboard.nome);
+
+    const linkSeguro =
+        escaparHTML(dashboard.link);
 
 
     card.innerHTML = `
 
         <div class="card-header">
 
-            <h3>
-                ${dashboard.nome}
-            </h3>
+            <div class="card-title-area">
 
+                <h3>
+                    ${nomeSeguro}
+                </h3>
+
+            </div>
+
+
+            <!-- =============================================
+                 ÍCONE ABRIR DASHBOARD
+                 ============================================= -->
             <a
-                href="${dashboard.link}"
+                href="${linkSeguro}"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="icon-box"
                 title="Abrir dashboard"
+                aria-label="Abrir dashboard ${nomeSeguro}"
             >
 
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"
                 >
+
                     <path
                         d="M14 4H20V10"
                         stroke="currentColor"
@@ -247,53 +290,51 @@ function criarCard(dashboard) {
         </div>
 
 
-        <p>
-            Clique para abrir o dashboard do Power BI
+        <p class="card-description">
+            Clique no ícone para abrir o dashboard do Power BI
         </p>
 
 
-        <div
-            style="
-                display:flex;
-                align-items:center;
-                gap:8px;
-                margin-top:12px;
-            "
-        >
-
-            <a
-                href="${dashboard.link}"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="${dashboard.link}"
-                style="
-                    min-width:0;
-                    flex:1;
-                    overflow:hidden;
-                    white-space:nowrap;
-                    text-overflow:ellipsis;
-                    font-size:12px;
-                    color:#4f6f8f;
-                    text-decoration:none;
-                "
-            >
-                ${encurtarLink(dashboard.link)}
-            </a>
-
+        <!-- =============================================
+             BOTÃO COPIAR LINK
+             ============================================= -->
+        <div class="card-actions">
 
             <button
                 type="button"
                 class="btn-copiar-link"
                 title="Copiar link"
-                style="
-                    border:none;
-                    background:transparent;
-                    cursor:pointer;
-                    font-size:17px;
-                    padding:4px;
-                "
+                aria-label="Copiar link do dashboard ${nomeSeguro}"
             >
-                📋
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                >
+
+                    <rect
+                        x="9"
+                        y="9"
+                        width="10"
+                        height="10"
+                        rx="2"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                    <path
+                        d="M15 9V6C15 4.9 14.1 4 13 4H6C4.9 4 4 4.9 4 6V13C4 14.1 4.9 15 6 15H9"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                    />
+
+                </svg>
+
+                <span>
+                    Copiar link
+                </span>
+
             </button>
 
         </div>
@@ -301,16 +342,21 @@ function criarCard(dashboard) {
     `;
 
 
-    // Botão copiar
+    // ========================================================
+    // BOTÃO COPIAR
+    // ========================================================
+
     const botaoCopiar =
-        card.querySelector(".btn-copiar-link");
+        card.querySelector(
+            ".btn-copiar-link"
+        );
+
 
     botaoCopiar.addEventListener(
         "click",
         function(event) {
 
             event.preventDefault();
-
             event.stopPropagation();
 
             copiarLink(
@@ -326,80 +372,173 @@ function criarCard(dashboard) {
 
 
 // ============================================================
-// MOSTRAR DASHBOARDS
+// RENDERIZAR DASHBOARDS
 // ============================================================
 
 function renderizarDashboards(lista) {
 
+    if (!listaDashboards) {
+        return;
+    }
+
     listaDashboards.innerHTML = "";
 
-    quantidadeDashboards.textContent =
-        `${lista.length} dashboard${
-            lista.length !== 1 ? "s" : ""
-        } disponíveis`;
 
+    // ========================================================
+    // CONTADOR
+    // ========================================================
+
+    if (quantidadeDashboards) {
+
+        quantidadeDashboards.textContent =
+            `${lista.length} ${
+                lista.length === 1
+                    ? "dashboard disponível"
+                    : "dashboards disponíveis"
+            }`;
+    }
+
+
+    // ========================================================
+    // NENHUM RESULTADO
+    // ========================================================
 
     if (lista.length === 0) {
 
-        nenhumResultado.style.display =
-            "block";
+        if (nenhumResultado) {
+            nenhumResultado.style.display =
+                "block";
+        }
 
         return;
     }
 
 
-    nenhumResultado.style.display =
-        "none";
+    if (nenhumResultado) {
+
+        nenhumResultado.style.display =
+            "none";
+    }
 
 
-    lista.forEach(dashboard => {
+    // ========================================================
+    // CRIAR CARDS
+    // ========================================================
 
-        const card =
-            criarCard(dashboard);
+    lista.forEach(
+        dashboard => {
 
-        listaDashboards.appendChild(card);
+            const card =
+                criarCard(dashboard);
 
-    });
-
+            listaDashboards.appendChild(
+                card
+            );
+        }
+    );
 }
 
 
 // ============================================================
-// PESQUISA
+// NORMALIZAR PESQUISA
 // ============================================================
 
-campoPesquisa.addEventListener(
-    "input",
-    function() {
+function normalizarPesquisa(texto) {
 
-        const texto =
-            campoPesquisa
-                .value
-                .toLowerCase()
-                .trim();
-
-
-        const filtrados =
-            dashboards.filter(
-                dashboard =>
-                    dashboard.nome
-                        .toLowerCase()
-                        .includes(texto)
-            );
+    return String(texto ?? "")
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .toLowerCase()
+        .trim();
+}
 
 
-        renderizarDashboards(
-            filtrados
+// ============================================================
+// FILTRAR DASHBOARDS
+// ============================================================
+
+function filtrarDashboards() {
+
+    const texto =
+        normalizarPesquisa(
+            campoPesquisa?.value
         );
 
+
+    if (!texto) {
+
+        renderizarDashboards(
+            dashboards
+        );
+
+        return;
     }
-);
+
+
+    const filtrados =
+        dashboards.filter(
+            dashboard => {
+
+                const nome =
+                    normalizarPesquisa(
+                        dashboard.nome
+                    );
+
+                return nome.includes(texto);
+            }
+        );
+
+
+    renderizarDashboards(
+        filtrados
+    );
+}
+
+
+// ============================================================
+// EVENTO DA PESQUISA
+// ============================================================
+
+if (campoPesquisa) {
+
+    campoPesquisa.addEventListener(
+        "input",
+        filtrarDashboards
+    );
+
+
+    // ESC limpa a pesquisa
+    campoPesquisa.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Escape") {
+
+                campoPesquisa.value = "";
+
+                renderizarDashboards(
+                    dashboards
+                );
+            }
+        }
+    );
+}
 
 
 // ============================================================
 // INICIALIZAÇÃO
 // ============================================================
 
-renderizarDashboards(
-    dashboards
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        renderizarDashboards(
+            dashboards
+        );
+
+    }
 );
