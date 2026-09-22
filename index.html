@@ -10,6 +10,7 @@
 
     <title>Power BI Portal</title>
 
+    <!-- CSS externo -->
     <link rel="stylesheet" href="style.css">
 
     <!-- JavaScript externo -->
@@ -19,9 +20,10 @@
 <body>
 
     <!-- =========================================================
-         TOPO
+         TOPO DO PORTAL
          ========================================================= -->
     <header class="topbar">
+
         <div class="topbar-content">
 
             <div class="brand">
@@ -39,11 +41,12 @@
             </div>
 
         </div>
+
     </header>
 
 
     <!-- =========================================================
-         HERO
+         ÁREA PRINCIPAL
          ========================================================= -->
     <section class="hero">
 
@@ -60,8 +63,8 @@
             </h1>
 
             <p>
-                Acesso centralizado a todos os seus dashboards do Power BI.
-                Clique em qualquer dashboard para visualizar os dados.
+                Acesso centralizado a todos os dashboards do Power BI.
+                Clique no ícone para visualizar o dashboard.
             </p>
 
         </div>
@@ -76,34 +79,66 @@
 
         <section class="dashboards-section">
 
-            <h2>
-                Dashboards Disponíveis
-            </h2>
+            <div class="section-header">
 
-            <span
-                class="subtitle"
-                id="quantidadeDashboards"
-            >
-                Carregando dashboards...
-            </span>
+                <div>
+                    <h2>
+                        Dashboards Disponíveis
+                    </h2>
 
-
-            <!-- PESQUISA -->
-            <div class="search-area">
-
-                <input
-                    type="text"
-                    id="campoPesquisa"
-                    placeholder="Pesquisar dashboard..."
-                    autocomplete="off"
-                >
+                    <span
+                        class="subtitle"
+                        id="quantidadeDashboards"
+                    >
+                        Carregando dashboards...
+                    </span>
+                </div>
 
             </div>
 
 
-            <!--
-                OS CARDS SERÃO CRIADOS PELO main.js
-            -->
+            <!-- =====================================================
+                 PESQUISA
+                 ===================================================== -->
+            <div class="search-area">
+
+                <div class="search-box">
+
+                    <span class="search-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle
+                                cx="11"
+                                cy="11"
+                                r="7"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            />
+
+                            <path
+                                d="M20 20L16.5 16.5"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                            />
+                        </svg>
+                    </span>
+
+                    <input
+                        type="text"
+                        id="campoPesquisa"
+                        placeholder="Pesquisar dashboard..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 CARDS
+                 Os cards serão criados automaticamente pelo main.js
+                 ===================================================== -->
             <div
                 class="cards-grid"
                 id="listaDashboards"
@@ -111,22 +146,54 @@
             </div>
 
 
-            <!-- MENSAGEM QUANDO NÃO ENCONTRAR -->
+            <!-- =====================================================
+                 SEM RESULTADOS
+                 ===================================================== -->
             <div
                 id="nenhumResultado"
-                style="
-                    display:none;
-                    text-align:center;
-                    padding:30px;
-                    color:#777;
-                "
+                class="nenhum-resultado"
+                style="display:none;"
             >
-                Nenhum dashboard encontrado.
+                <div class="nenhum-resultado-icone">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="7"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                        <path
+                            d="M20 20L16.5 16.5"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                        />
+                    </svg>
+                </div>
+
+                <p>
+                    Nenhum dashboard encontrado.
+                </p>
+
             </div>
 
         </section>
 
     </main>
+
+
+    <!-- =========================================================
+         RODAPÉ
+         ========================================================= -->
+    <footer class="footer">
+
+        <p>
+            Power BI Portal
+        </p>
+
+    </footer>
 
 </body>
 </html>
