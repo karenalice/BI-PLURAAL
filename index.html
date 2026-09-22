@@ -1,939 +1,190 @@
-/* =========================================================
-   RESET
-   ========================================================= */
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
 
-* {
-    box-sizing: border-box;
-}
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-html {
-    scroll-behavior: smooth;
-}
+    <title>Power BI Portal</title>
 
-body {
-    margin: 0;
+    <link
+        rel="stylesheet"
+        href="./style.css"
+    >
 
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    <script
+        src="./main.js"
+        defer
+    ></script>
+</head>
 
-    background: #f6f7f9;
+<body>
 
-    color: #1f2937;
-}
+    <header class="topbar">
+        <div class="topbar-content">
 
-img {
-    display: block;
-    max-width: 100%;
-}
+            <div class="brand">
+                <img
+                    src="./logo.png"
+                    alt="Logo Power BI Portal"
+                    class="brand-logo"
+                >
 
-button,
-input {
-    font: inherit;
-}
+                <span class="brand-title">
+                    Power BI Portal
+                </span>
+            </div>
 
-a {
-    color: inherit;
-}
+        </div>
+    </header>
 
 
-/* =========================================================
-   TOPO
-   ========================================================= */
+    <section class="hero">
 
-.topbar {
-    width: 100%;
+        <div class="hero-content">
 
-    background: #ffffff;
+            <img
+                src="./logo.png"
+                alt="Logo Portal"
+                class="hero-logo"
+            >
 
-    border-bottom:
-        1px solid #e5e7eb;
-}
+            <h1>
+                Portal de Dashboards
+            </h1>
+
+            <p>
+                Acesso centralizado a todos os dashboards do Power BI.
+                Pesquise pelo nome e clique no ícone para abrir o dashboard.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <main class="container">
+
+        <section class="dashboards-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Dashboards Disponíveis
+                    </h2>
 
-.topbar-content {
-    width: 100%;
+                    <span
+                        class="subtitle"
+                        id="quantidadeDashboards"
+                    >
+                        Carregando dashboards...
+                    </span>
 
-    max-width: 1280px;
+                </div>
 
-    margin: 0 auto;
+            </div>
 
-    padding:
-        18px 28px;
 
-    display: flex;
+            <div class="search-area">
 
-    align-items: center;
+                <div class="search-box">
 
-    justify-content: space-between;
-}
-
-.brand {
-    display: flex;
-
-    align-items: center;
-
-    gap: 14px;
-}
-
-.brand-logo {
-    width: 28px;
-    height: 28px;
-
-    object-fit: contain;
-}
-
-.brand-title {
-    font-size: 22px;
-
-    font-weight: 700;
-
-    color: #111827;
-}
-
-
-/* =========================================================
-   HERO
-   ========================================================= */
-
-.hero {
-    width: 100%;
-
-    background:
-        linear-gradient(
-            180deg,
-            #ffffff 0%,
-            #f7f9fc 100%
-        );
-
-    border-bottom:
-        1px solid #e5e7eb;
-}
-
-.hero-content {
-    width: 100%;
-
-    max-width: 850px;
-
-    margin: 0 auto;
-
-    padding:
-        42px 24px;
-
-    text-align: center;
-}
-
-.hero-logo {
-    width: 78px;
-    height: 78px;
-
-    object-fit: contain;
-
-    margin:
-        0 auto 18px;
-}
-
-.hero h1 {
-    margin:
-        0 0 12px;
-
-    font-size: 34px;
-
-    line-height: 1.15;
-
-    color: #111827;
-}
-
-.hero p {
-    margin: 0 auto;
-
-    max-width: 650px;
-
-    color: #6b7280;
-
-    font-size: 15px;
-
-    line-height: 1.6;
-}
-
-
-/* =========================================================
-   CONTAINER
-   ========================================================= */
-
-.container {
-    width: 100%;
-
-    max-width: 1280px;
-
-    margin: 0 auto;
-
-    padding:
-        34px 28px 60px;
-}
-
-
-/* =========================================================
-   SEÇÃO
-   ========================================================= */
-
-.dashboards-section {
-    width: 100%;
-}
-
-.section-header {
-    display: flex;
-
-    justify-content:
-        space-between;
-
-    align-items:
-        flex-end;
-
-    gap: 20px;
-
-    margin-bottom: 22px;
-}
-
-.dashboards-section h2 {
-    margin:
-        0 0 6px;
-
-    color: #111827;
-
-    font-size: 26px;
-}
-
-.subtitle {
-    color: #6b7280;
-
-    font-size: 14px;
-}
-
-
-/* =========================================================
-   PESQUISA
-   ========================================================= */
-
-.search-area {
-    width: 100%;
-
-    margin-bottom: 28px;
-}
-
-.search-box {
-    position: relative;
-
-    width: 100%;
-
-    max-width: 520px;
-}
-
-.search-box input {
-    display: block;
-
-    width: 100%;
-
-    height: 46px;
-
-    padding:
-        0 16px 0 44px;
-
-    border:
-        1px solid #d1d5db;
-
-    border-radius:
-        10px;
-
-    background: #ffffff;
-
-    color: #111827;
-
-    font-size: 14px;
-
-    outline: none;
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease;
-}
-
-.search-box input::placeholder {
-    color: #9ca3af;
-}
-
-.search-box input:focus {
-    border-color: #2563eb;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(37, 99, 235, .10);
-}
-
-
-/* =========================================================
-   LUPA
-   ========================================================= */
-
-.search-icon {
-    position: absolute !important;
-
-    left: 14px !important;
-
-    top: 50% !important;
-
-    transform:
-        translateY(-50%) !important;
-
-    width: 18px !important;
-
-    height: 18px !important;
-
-    min-width: 18px !important;
-
-    min-height: 18px !important;
-
-    max-width: 18px !important;
-
-    max-height: 18px !important;
-
-    display: flex !important;
-
-    align-items: center !important;
-
-    justify-content:
-        center !important;
-
-    overflow: hidden !important;
-
-    color: #64748b;
-
-    pointer-events: none;
-
-    z-index: 5;
-}
-
-.search-icon svg {
-    display: block !important;
-
-    width: 18px !important;
-
-    height: 18px !important;
-
-    min-width: 18px !important;
-
-    min-height: 18px !important;
-
-    max-width: 18px !important;
-
-    max-height: 18px !important;
-}
-
-
-/* =========================================================
-   GRID
-   ========================================================= */
-
-.cards-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(280px, 1fr)
-        );
-
-    gap: 20px;
-}
-
-
-/* =========================================================
-   CARD
-   ========================================================= */
-
-.dashboard-card {
-    min-width: 0;
-
-    min-height: 175px;
-
-    padding: 20px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    background: #ffffff;
-
-    border:
-        1px solid #e2e8f0;
-
-    border-radius:
-        14px;
-
-    box-shadow:
-        0 3px 10px
-        rgba(15, 23, 42, .04);
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        border-color .2s ease;
-}
-
-.dashboard-card:hover {
-    transform:
-        translateY(-3px);
-
-    border-color:
-        #cbd5e1;
-
-    box-shadow:
-        0 10px 24px
-        rgba(15, 23, 42, .08);
-}
-
-
-/* =========================================================
-   CABEÇALHO CARD
-   ========================================================= */
-
-.card-header {
-    display: flex;
-
-    align-items: flex-start;
-
-    justify-content:
-        space-between;
-
-    gap: 14px;
-}
-
-.card-title-area {
-    min-width: 0;
-
-    flex: 1;
-}
-
-.card-header h3 {
-    margin: 0;
-
-    color: #111827;
-
-    font-size: 20px;
-
-    font-weight: 700;
-
-    line-height: 1.3;
-}
-
-
-/* =========================================================
-   ÍCONE ABRIR
-   ========================================================= */
-
-.icon-box {
-    width: 36px !important;
-
-    height: 36px !important;
-
-    min-width: 36px !important;
-
-    min-height: 36px !important;
-
-    max-width: 36px !important;
-
-    max-height: 36px !important;
-
-    flex:
-        0 0 36px;
-
-    display:
-        inline-flex !important;
-
-    align-items:
-        center !important;
-
-    justify-content:
-        center !important;
-
-    border-radius:
-        9px;
-
-    background:
-        #eff6ff;
-
-    color:
-        #2563eb;
-
-    text-decoration:
-        none;
-
-    overflow:
-        hidden;
-
-    transition:
-        background .2s ease,
-        color .2s ease,
-        transform .2s ease;
-}
-
-.icon-box:hover {
-    background:
-        #dbeafe;
-
-    color:
-        #1d4ed8;
-
-    transform:
-        translateY(-1px);
-}
-
-.icon-box svg {
-    width:
-        18px !important;
-
-    height:
-        18px !important;
-
-    min-width:
-        18px !important;
-
-    min-height:
-        18px !important;
-
-    max-width:
-        18px !important;
-
-    max-height:
-        18px !important;
-
-    display:
-        block !important;
-}
-
-
-/* =========================================================
-   DESCRIÇÃO CARD
-   ========================================================= */
-
-.card-description {
-    margin:
-        16px 0 18px;
-
-    color:
-        #64748b;
-
-    font-size:
-        14px;
-
-    line-height:
-        1.5;
-}
-
-
-/* =========================================================
-   LINK VISÍVEL
-   ========================================================= */
-
-.dashboard-link-area {
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap: 8px;
-
-    width: 100%;
-
-    margin-top: auto;
-
-    padding-top: 8px;
-}
-
-.dashboard-link-text {
-    flex: 1;
-
-    min-width: 0;
-
-    overflow:
-        hidden;
-
-    white-space:
-        nowrap;
-
-    text-overflow:
-        ellipsis;
-
-    color:
-        #64748b;
-
-    font-size:
-        12px;
-
-    line-height:
-        1.4;
-
-    text-decoration:
-        none;
-
-    transition:
-        color .2s ease;
-}
-
-.dashboard-link-text:hover {
-    color:
-        #2563eb;
-
-    text-decoration:
-        underline;
-}
-
-
-/* =========================================================
-   BOTÃO COPIAR
-   ========================================================= */
-
-.btn-copiar-link {
-    width:
-        30px !important;
-
-    height:
-        30px !important;
-
-    min-width:
-        30px !important;
-
-    min-height:
-        30px !important;
-
-    max-width:
-        30px !important;
-
-    max-height:
-        30px !important;
-
-    flex:
-        0 0 30px;
-
-    padding: 0 !important;
-
-    border:
-        1px solid #e2e8f0;
-
-    border-radius:
-        7px;
-
-    background:
-        #ffffff;
-
-    color:
-        #475569;
-
-    display:
-        inline-flex !important;
-
-    align-items:
-        center !important;
-
-    justify-content:
-        center !important;
-
-    cursor:
-        pointer;
-
-    overflow:
-        hidden;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease,
-        color .2s ease;
-}
-
-.btn-copiar-link:hover {
-    background:
-        #f8fafc;
-
-    border-color:
-        #cbd5e1;
-
-    color:
-        #2563eb;
-}
-
-.btn-copiar-link svg {
-    display:
-        block !important;
-
-    width:
-        14px !important;
-
-    height:
-        14px !important;
-
-    min-width:
-        14px !important;
-
-    min-height:
-        14px !important;
-
-    max-width:
-        14px !important;
-
-    max-height:
-        14px !important;
-}
-
-.btn-copiar-link.copiado {
-    background:
-        #f0fdf4;
-
-    border-color:
-        #86efac;
-
-    color:
-        #15803d;
-}
-
-
-/* =========================================================
-   SEM RESULTADOS
-   ========================================================= */
-
-.nenhum-resultado {
-    padding:
-        55px 20px;
-
-    text-align:
-        center;
-
-    color:
-        #6b7280;
-}
-
-.nenhum-resultado-icone {
-    width:
-        42px !important;
-
-    height:
-        42px !important;
-
-    margin:
-        0 auto 12px;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    color:
-        #94a3b8;
-
-    overflow:
-        hidden;
-}
-
-.nenhum-resultado-icone svg {
-    width:
-        26px !important;
-
-    height:
-        26px !important;
-
-    min-width:
-        26px !important;
-
-    min-height:
-        26px !important;
-
-    max-width:
-        26px !important;
-
-    max-height:
-        26px !important;
-
-    display:
-        block !important;
-}
-
-.nenhum-resultado p {
-    margin: 0;
-
-    font-size:
-        15px;
-}
-
-
-/* =========================================================
-   RODAPÉ
-   ========================================================= */
-
-.footer {
-    background:
-        #ffffff;
-
-    border-top:
-        1px solid #e5e7eb;
-
-    padding:
-        22px;
-
-    text-align:
-        center;
-}
-
-.footer p {
-    margin: 0;
-
-    color:
-        #94a3b8;
-
-    font-size:
-        13px;
-}
-
-
-/* =========================================================
-   SEGURANÇA EXTRA PARA SVG
-   ========================================================= */
-
-.card-header svg,
-.dashboard-link-area svg,
-.search-box svg,
-.nenhum-resultado svg {
-    display: block;
-}
-
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (max-width: 900px) {
-
-    .hero-content {
-        padding:
-            38px 20px;
-    }
-
-    .hero h1 {
-        font-size:
-            30px;
-    }
-
-    .container {
-        padding:
-            28px 20px 50px;
-    }
-
-    .cards-grid {
-        grid-template-columns:
-            repeat(
-                auto-fit,
-                minmax(240px, 1fr)
-            );
-    }
-}
-
-
-/* =========================================================
-   CELULAR
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    .topbar-content {
-        padding:
-            14px 18px;
-    }
-
-    .brand-logo {
-        width:
-            24px;
-
-        height:
-            24px;
-    }
-
-    .brand-title {
-        font-size:
-            18px;
-    }
-
-    .hero-content {
-        padding:
-            32px 18px;
-    }
-
-    .hero-logo {
-        width:
-            64px;
-
-        height:
-            64px;
-    }
-
-    .hero h1 {
-        font-size:
-            25px;
-    }
-
-    .hero p {
-        font-size:
-            14px;
-    }
-
-    .container {
-        padding:
-            24px 16px 40px;
-    }
-
-    .section-header {
-        flex-direction:
-            column;
-
-        align-items:
-            flex-start;
-    }
-
-    .dashboards-section h2 {
-        font-size:
-            22px;
-    }
-
-    .search-box {
-        max-width:
-            100%;
-    }
-
-    .cards-grid {
-        grid-template-columns:
-            1fr;
-
-        gap:
-            14px;
-    }
-
-    .dashboard-card {
-        min-height:
-            160px;
-
-        padding:
-            18px;
-    }
-
-    .card-header h3 {
-        font-size:
-            18px;
-    }
-
-    .dashboard-link-text {
-        font-size:
-            11px;
-    }
-}
+                    <span
+                        class="search-icon"
+                        aria-hidden="true"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                        >
+                            <circle
+                                cx="11"
+                                cy="11"
+                                r="7"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            />
+
+                            <path
+                                d="M20 20L16.5 16.5"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                            />
+                        </svg>
+                    </span>
+
+                    <input
+                        type="text"
+                        id="campoPesquisa"
+                        placeholder="Pesquisar dashboard..."
+                        autocomplete="off"
+                        aria-label="Pesquisar dashboard"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="cards-grid"
+                id="listaDashboards"
+            >
+            </div>
+
+
+            <div
+                id="nenhumResultado"
+                class="nenhum-resultado"
+                style="display:none;"
+            >
+
+                <div class="nenhum-resultado-icone">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                    >
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="7"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        />
+
+                        <path
+                            d="M20 20L16.5 16.5"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                        />
+                    </svg>
+                </div>
+
+                <p>
+                    Nenhum dashboard encontrado.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <p>
+            Power BI Portal
+        </p>
+
+    </footer>
+
+</body>
+</html>
