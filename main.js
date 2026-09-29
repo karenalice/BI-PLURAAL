@@ -78,6 +78,10 @@ const dashboards = [
     {
         nome: "IAP",
         link: "https://app.powerbi.com/view?r=eyJrIjoiMTE5ODA1NmMtMWFlNC00NDkxLWIwN2ItNmI1OWFkNDE3OTVhIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
+    {
+        nome: "Paulína",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiNDI4NWM0ZjctODgxMi00YTcyLTlhZTUtOWE3MTJkYThmODFjIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     }
 ];
 
