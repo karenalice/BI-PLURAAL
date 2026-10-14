@@ -73,6 +73,14 @@ const dashboards = [
     {
         nome: "Paulína",
         link: "https://app.powerbi.com/view?r=eyJrIjoiZTQwMmYxYjYtNzI5NC00YzFkLWE0OTUtZmUyYWNiY2JlOTFlIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
+    {
+        nome: "Campinas",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiYzE4YjI2MjQtNjdiOS00YTU4LTliZjEtYTk0MTBhN2RlYzdjIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
+    },
+    {
+        nome: "IAESC",
+        link: "https://app.powerbi.com/view?r=eyJrIjoiN2U4ODljYTktNjdjNC00OGI1LTlhYmUtOGMwYTk1NjU1NjRjIiwidCI6ImM4NGI3YzEwLTdlZWYtNDFlNS1hYjllLTRlMWQ1NjlkNzIyYiJ9"
     }
 ];
 
